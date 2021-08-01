@@ -1,19 +1,13 @@
 {
 	"metadata": {},
-	"lastBuffer": "Main.java",
+	"lastBuffer": "",
 	"files": {
-		"Dog.json": {},
-		"Hello Java.bin": {},
-		"Hello Java.elf": {},
-		"Main.java": {},
-		"Pattern.png": {},
-		"dog.png": {},
 		"dump.bin": {},
 		"firmware.bin": {},
 		"project.json": {}
 	},
 	"javaFlags": {
-		"mainClass": "Main"
+		"mainClass": "code.Main"
 	},
 	"libs": {
 		"Pokitto": [
@@ -165,13 +159,35 @@
 		]
 	},
 	"meta": {
-		"": {},
-		"Dog.json": {},
-		"Main.java": {},
+		"MoonDropDale.pal": {},
+		"Moondrop Dale.bin": {},
+		"Moondrop Dale.elf": {},
+		"aseprite": {},
+		"README.md": {},
+		"code": {},
+		"images": {},
 		"project.json": {},
-		"Pattern.png": {},
-		"dog.png": {},
-		"MoonDropDale.pal": {}
+		"sprites": {},
+		"aseprite/Tor.aseprite": {},
+		"aseprite/concept.aseprite": {},
+		"code/Globals.java": {},
+		"code/Main.java": {},
+		"code/entities": {},
+		"code/stages": {},
+		"images/concept.png": {},
+		"sprites/Tor.json": {},
+		"sprites/Tor.png": {},
+		"": {},
+		"code/entities/Player.java": {},
+		"code/stages/Garden.java": {},
+		"Castpixel16.pal": {},
+		"aseprite/Lol.aseprite": {},
+		"code/stages/Shop.java": {},
+		"code/managers": {},
+		"code/managers/SaveManager.java": {}
 	},
-	"ideVersion": 10000
+	"ideVersion": 10000,
+	"BUILDFlags": {
+		"Pokitto": {}
+	}
 }
