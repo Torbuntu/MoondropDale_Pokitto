@@ -1,3 +1,5 @@
+package code.managers;
+
 import code.Globals;
 
 class Inventory {

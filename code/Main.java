@@ -1,7 +1,8 @@
+package code;
 
 import femto.Game;
 import femto.State;
-
+import femto.sound.Mixer;
 import femto.font.TIC80;
 
 import code.stages.Title;
@@ -12,6 +13,7 @@ class Main extends State {
     // start the game using Main as the initial state
     // and TIC80 as the menu's font
     public static void main(String[] args){
+        Mixer.init(8000);
         Globals.init();
         Game.run( TIC80.font(), new Title() );
     }

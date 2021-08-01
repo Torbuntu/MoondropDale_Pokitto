@@ -12,7 +12,10 @@
 	"libs": {
 		"Pokitto": [
 			"${appPath}/javacompiler/pokitto/libs/startup.cpp",
-			"${appPath}/javacompiler/pokitto/libs/SystemInit.s"
+			"${appPath}/javacompiler/pokitto/libs/SystemInit.s",
+			{
+				"recurse": "${appPath}/javacompiler/pokitto/libs/SDFileSystem"
+			}
 		],
 		"linux": "Desktop",
 		"windows": "Desktop",
@@ -161,27 +164,37 @@
 	"meta": {
 		"MoonDropDale.pal": {},
 		"Moondrop Dale.bin": {},
-		"Moondrop Dale.eeprom": {},
 		"Moondrop Dale.elf": {},
+		"Moondrop Dale.eeprom": {},
+		"TitleScreen.raw": {
+			"sdcard": true
+		},
 		"README.md": {},
-		"aseprite": {},
+		"TitleScreen.wav": {},
 		"code": {},
 		"images": {},
+		"aseprite": {},
 		"project.json": {},
 		"sprites": {},
-		"aseprite/Lol.aseprite": {},
-		"aseprite/Tor.aseprite": {},
-		"aseprite/concept.aseprite": {},
+		"test.txt": {
+			"sdcard": true
+		},
 		"code/Globals.java": {},
 		"code/Main.java": {},
 		"code/entities": {},
 		"code/managers": {},
 		"code/stages": {},
 		"images/concept.png": {},
+		"aseprite/Hoe.aseprite": {},
+		"aseprite/Lol.aseprite": {},
+		"aseprite/Planter.aseprite": {},
+		"aseprite/Tor.aseprite": {},
+		"aseprite/Water.aseprite": {},
+		"aseprite/concept.aseprite": {},
 		"sprites/Lol.json": {},
 		"sprites/Lol.png": {},
-		"sprites/Tor.json": {},
 		"sprites/Tor.png": {},
+		"sprites/Tor.json": {},
 		"": {},
 		"code/entities/Player.java": {},
 		"code/managers/Inventory.java": {},

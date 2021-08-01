@@ -1,3 +1,5 @@
+package code;
+
 import femto.mode.HiRes16Color;
 import femto.Game;
 import femto.State;

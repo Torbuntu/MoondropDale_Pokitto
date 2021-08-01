@@ -1,3 +1,5 @@
+package code.managers;
+
 class SaveManager extends femto.Cookie {
     SaveManager() {
         super();
@@ -18,4 +20,6 @@ class SaveManager extends femto.Cookie {
     int magicFruit;
     
     int monies;
+    
+    
 }
