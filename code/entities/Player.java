@@ -1,13 +1,20 @@
 import femto.mode.HiRes16Color;
 import code.Globals;
+
+import code.managers.Inventory;
+
 import sprites.Tor;
+import sprites.Lol;
+
 
 class Player {
-    // face: 0:left, 1:up,2:right,3:down
+    // face: 0:left, 1:up, 2:right, 3:down
     int character, face;
     int x, y, w, h, flash;
     Tor tor;
+    Lol lol;
     boolean cursor = true;
+    Inventory inventory;
     
     Player(){
         x = 32;
@@ -15,40 +22,44 @@ class Player {
         
         face = 0;
         character = Globals.character;
-        if(character ==1){
+        if(character == 1){
             tor = new Tor();
             tor.idleHori();
             w = tor.width();
             h = tor.height();
         }else{
-            //lol = new Lol();
-            
+            lol = new Lol();
+            lol.idleHori();
+            w = lol.width();
+            h = lol.height();
         }
+        
+        inventory = new Inventory();
     }
     
     void moveLeft(){
         System.out.println("Left");
-        tor.idleHori();
-        tor.setMirrored(false);
+        character == 1 ? tor.idleHori() : lol.idleHori();
+        character == 1 ? tor.setMirrored(false) : lol.setMirrored(false);
         if(face != 0)face = 0;
         else x-=20;
     }
     void moveRight(){
         System.out.println("Right");
-        tor.idleHori();
-        tor.setMirrored(true);
+        character == 1 ? tor.idleHori() : lol.idleHori();
+        character == 1 ? tor.setMirrored(true) : lol.setMirrored(true);
         if(face != 2)face = 2;
         else x += 20;
     }
     void moveUp(){
         System.out.println("Up");
-        tor.idleUp();
+        character == 1 ? tor.idleUp() : lol.idleUp();
         if(face != 1)face = 1;
         else y -= 16;
     }
     void moveDown(){
         System.out.println("Down");
-        tor.idleDown();
+        character == 1 ? tor.idleDown() : lol.idleDown();
         if(face != 3) face = 3;
         else y += 16;
     }
@@ -60,7 +71,7 @@ class Player {
         if(character == 1){
             tor.draw(screen, x, y);
         }else{
-            
+            lol.draw(screen, x, y);
         }
         if(cursor && flash > 5){
             switch(face){

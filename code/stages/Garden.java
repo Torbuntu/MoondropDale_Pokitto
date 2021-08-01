@@ -10,6 +10,8 @@ import code.Main;
 
 import code.entities.Player;
 
+import code.stages.Title;
+
 class Garden extends State {
     HiRes16Color screen;
     Player player;
@@ -27,7 +29,7 @@ class Garden extends State {
     
     void update(){
         if(Button.A.justPressed()){
-            Game.changeState( new Main() );
+            Game.changeState( new Title() );
         }
         
         // handle movement
