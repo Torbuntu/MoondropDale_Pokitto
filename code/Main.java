@@ -16,19 +16,13 @@ class Main extends State {
         Game.run( TIC80.font(), new Title() );
     }
     
-    // Avoid allocation in a State's constructor.
-    // Allocate on init instead.
     void init(){
     }
     
-    // Might help in certain situations
     void shutdown(){
-
     }
     
-    // update is called by femto.Game every frame
     void update(){
-
     }
     
 }

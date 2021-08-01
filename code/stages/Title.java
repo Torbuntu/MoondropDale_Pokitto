@@ -28,6 +28,7 @@ class Title extends State {
     void shutdown(){
         screen = null;
     }
+    
     void update(){
         screen.clear(2);
         // Change to a new state when A is pressed
