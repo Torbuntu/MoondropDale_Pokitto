@@ -19,7 +19,6 @@ class Inventory {
     int greenBean;
     int tomato;
     int cranberry;
-    int yam;
     int blueberry;
     int magicFruit;
     
@@ -28,14 +27,12 @@ class Inventory {
     Inventory(){
         turnip = Globals.saveManager.turnip;
         radish = Globals.saveManager.radish;
-        beet = Globals.saveManager.beet;
         daisy = Globals.saveManager.daisy;
         coffee = Globals.saveManager.coffee;
         tea = Globals.saveManager.tea;
         greenBean = Globals.saveManager.greenBean;
         tomato = Globals.saveManager.tomato;
         cranberry = Globals.saveManager.cranberry;
-        yam = Globals.saveManager.yam;
         blueberry = Globals.saveManager.blueberry;
         magicFruit = Globals.saveManager.magicFruit;
         

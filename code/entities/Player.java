@@ -1,3 +1,5 @@
+package code.entities;
+
 import femto.mode.HiRes16Color;
 import code.Globals;
 
@@ -17,8 +19,8 @@ class Player {
     Inventory inventory;
     
     Player(){
-        x = 32;
-        y = 32;
+        x = 20;
+        y = 74;
         
         face = 0;
         character = Globals.character;
@@ -68,28 +70,29 @@ class Player {
     void render(HiRes16Color screen){
         flash++;
         if(flash>50)flash = 0;
+        if(cursor && flash > 5){
+            switch(face){
+                case 0:
+                    screen.drawRect(x-w, y+6, 20, 16, 14);
+                    break;
+                case 1:
+                    screen.drawRect(x, y-10, 20, 16, 14);
+                    break;
+                case 2:
+                    screen.drawRect(x+w, y+6, 20, 16, 14);
+                    break;
+                case 3:
+                    screen.drawRect(x, y+h-2, 20, 16, 14);
+                    break;
+            }
+            
+        }
         if(character == 1){
             tor.draw(screen, x, y);
         }else{
             lol.draw(screen, x, y);
         }
-        if(cursor && flash > 5){
-            switch(face){
-                case 0:
-                    screen.drawRect(x-w, y+8, 20, 16, 14);
-                    break;
-                case 1:
-                    screen.drawRect(x, y-16, 20, 16, 14);
-                    break;
-                case 2:
-                    screen.drawRect(x+w, y+8, 20, 16, 14);
-                    break;
-                case 3:
-                    screen.drawRect(x, y+h, 20, 16, 14);
-                    break;
-            }
-            
-        }
+
     }
     
     void dispose(){

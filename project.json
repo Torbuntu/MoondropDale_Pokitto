@@ -14,7 +14,7 @@
 			"${appPath}/javacompiler/pokitto/libs/startup.cpp",
 			"${appPath}/javacompiler/pokitto/libs/SystemInit.s",
 			{
-				"recurse": "${appPath}/javacompiler/pokitto/libs/SDFileSystem"
+				"recurse": "${appPath}/javacompiler/pokitto/libs/FemtoLibs"
 			}
 		],
 		"linux": "Desktop",
@@ -163,45 +163,54 @@
 	},
 	"meta": {
 		"MoonDropDale.pal": {},
+		"Moondrop Dale.eeprom": {},
 		"Moondrop Dale.bin": {},
 		"Moondrop Dale.elf": {},
-		"Moondrop Dale.eeprom": {},
-		"TitleScreen.raw": {
-			"sdcard": true
-		},
-		"README.md": {},
-		"TitleScreen.wav": {},
-		"code": {},
-		"images": {},
 		"aseprite": {},
-		"project.json": {},
-		"sprites": {},
-		"test.txt": {
+		"README.md": {},
+		"awesomeness.wav": {},
+		"code": {},
+		"field": {
 			"sdcard": true
 		},
+		"images": {},
+		"music": {
+			"sdcard": true
+		},
+		"project.json": {},
+		"sdtest.txt": {
+			"sdcard": true
+		},
+		"sprites": {},
+		"test.beep": {},
+		"": {},
 		"code/Globals.java": {},
 		"code/Main.java": {},
 		"code/entities": {},
 		"code/managers": {},
 		"code/stages": {},
-		"images/concept.png": {},
+		"music/mdd.raw": {
+			"sdcard": true
+		},
+		"code/entities/Crop.java": {},
+		"code/entities/Player.java": {},
 		"aseprite/Hoe.aseprite": {},
 		"aseprite/Lol.aseprite": {},
 		"aseprite/Planter.aseprite": {},
 		"aseprite/Tor.aseprite": {},
 		"aseprite/Water.aseprite": {},
 		"aseprite/concept.aseprite": {},
-		"sprites/Lol.json": {},
-		"sprites/Lol.png": {},
-		"sprites/Tor.png": {},
-		"sprites/Tor.json": {},
-		"": {},
-		"code/entities/Player.java": {},
-		"code/managers/Inventory.java": {},
-		"code/managers/SaveManager.java": {},
 		"code/stages/Garden.java": {},
 		"code/stages/Shop.java": {},
-		"code/stages/Title.java": {}
+		"code/stages/Title.java": {},
+		"sprites/Lol.json": {},
+		"sprites/Lol.png": {},
+		"sprites/Tor.json": {},
+		"images/concept.png": {},
+		"sprites/Tor.png": {},
+		"code/managers/SaveManager.java": {},
+		"code/managers/Inventory.java": {},
+		"genArr.groovy": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

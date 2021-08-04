@@ -6,6 +6,7 @@ import femto.State;
 import femto.input.Button;
 import femto.font.TIC80;
 import femto.sound.Stream;
+import femto.sound.Mixer;
 
 import code.Globals;
 
@@ -14,12 +15,14 @@ import code.stages.Garden;
 import sprites.Tor;
 import sprites.Lol;
 
-import femto.CPP;
-
 class Title extends State {
     Tor tor;
     Lol lol;
     HiRes16Color screen;
+    
+    int[][] field;
+    
+    boolean playing = false;
     
     void init(){
         screen = Globals.screen;
@@ -29,15 +32,24 @@ class Title extends State {
         
         tor = new Tor();
         tor.idleDown();
-        Stream.play("TitleScreen.raw");
         
+        // Mixer.init(8000);
+        // playing = Stream.play("music/mdd.raw");
+        // if(playing){
+        //     System.out.println("Playing");
+        // }else{
+        //     System.out.println("Failed to start stream.");
+        // }
+
     }
+    
     void shutdown(){
         screen = null;
     }
     
     void update(){
-        Stream.update();
+        //Stream.update();
+        
         screen.clear(2);
         // Change to a new state when A is pressed
         if( Button.A.justPressed() )
@@ -49,12 +61,7 @@ class Title extends State {
         if(Button.Right.justPressed()){
             Globals.character = 0;
         }
-        
-        if( Button.B.justPressed()){
-             
-            testFile();
-            
-        }
+
 
         // Print some text
         screen.setTextPosition( 0, 64 );
@@ -77,14 +84,5 @@ class Title extends State {
         // Update the screen with everything that was drawn
         screen.flush();
     }
-    
-    @CPP(include="SDFileSystem.h")
-    public void testFile(){
-        __inline_cpp__("
-            FILE *fp = fopen(\"test.txt\", \"rw\");
-            if(fp == NULL) return;
-            fprintf(fp, \"Hello, files!\");
-            fclose(fp);
-        ");
-    }
+
 }
