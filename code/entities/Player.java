@@ -121,9 +121,8 @@ class Player {
     
 
     void render(HiRes16Color screen){
-        flash++;
-        if(flash>50)flash = 0;
-        if(cursor && flash > 5){
+
+        if(x >= 20 && x < 140 && y >= 64 && y < 160){
             screen.drawRect(x, y, 20, 16, 14);
         }
         
@@ -141,10 +140,25 @@ class Player {
                 drawPlayer(screen, x, y-20);
                 break;
         }
-            
-        
-        
 
+    }
+    
+    /**
+     * This is the Y where the player sprite is rendered
+     */ 
+    int getRenderY(){
+        switch(face){
+            case 0:
+            case 2:
+                return y-8;
+                break;
+            case 1:
+                return y+10;
+                break;
+            case 3:
+                return y-20;
+                break;
+        }
     }
     
     void drawPlayer(HiRes16Color screen, int x, int y){
