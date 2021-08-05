@@ -9,6 +9,8 @@ import femto.font.TIC80;
 
 import code.managers.SaveManager;
 
+import femto.File;
+
 public class Globals {
     static void init(){
         // just to make sure this exists.
@@ -19,5 +21,23 @@ public class Globals {
 
     // 1 = Tor, 2 = Lol 
     public static int character = 0; 
+    
+    public static byte[] load(String path){
+        File file = new File();
+        byte[] result;
+        if(file.openRO(path)){
+            result = file.toArray();
+        }
+        file.close();
+        return result;
+    }
+    
+    public static void save(String path, byte[] data){
+        File file = new File();
+        if(file.openRW(path)){
+            file.write(data);
+        }
+        file.close();
+    }
     
 }

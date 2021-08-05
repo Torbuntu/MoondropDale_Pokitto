@@ -6,7 +6,6 @@ import femto.State;
 import femto.input.Button;
 import femto.palette.Psygnosia;
 import femto.font.TIC80;
-import femto.File;
 
 import code.Globals;
 import code.Main;
@@ -15,7 +14,6 @@ import code.entities.Player;
 import code.entities.Crop;
 
 import code.stages.Title;
-
 
 class Garden extends State {
     HiRes16Color screen;
@@ -26,7 +24,7 @@ class Garden extends State {
     void init(){
         screen = Globals.screen;
         player = new Player();
-        byte[] field = readFile("field");
+        byte[] field = Globals.load("field");
 
         // TODO: Fix this nonsense.
         crops = new Crop[36];
@@ -35,9 +33,8 @@ class Garden extends State {
         int id = 0;
         for(int i =0; i < 72; i+=2){
             if(id > 35)return;
-            System.out.print(field[i]); 
             crops[id] = new Crop(
-                field[i], 
+                field[i],
                 field[i+1], 
                 x, y);
             x++;
@@ -59,7 +56,27 @@ class Garden extends State {
     
     void update(){
         if(Button.A.justPressed()){
+
+            byte[] save = new byte[crops.length * 2];
+            int id = 0;
+            for(int i = 0; i < 72; i+=2){
+                save[i] = (byte)crops[id].getType();
+                save[i+1] = (byte)crops[id].getGrowth();
+                id++;
+            }
+            Globals.save("field", save);
+            
             Game.changeState( new Title() );
+        }
+        
+        if( Button.B.justPressed() ){
+            int x = (player.x - 20)/20;
+            int y = (player.y - 64)/16;
+            System.out.println("Affected tile: " + player.x + ","+player.y);
+            System.out.print("X: " + x);
+            System.out.print(", Y: " + y);
+            crops[x+y*6].type = 5;
+            crops[x+y*6].growth = 0;
         }
         
         // handle movement
@@ -98,13 +115,5 @@ class Garden extends State {
         screen.flush();
     }
 
-    public byte[] readFile(String path){
-        File file = new File();
-        byte[] result;
-        if(file.openRO(path)){
-            result = file.toArray();
-        }
-        file.close();
-        return result;
-    }
+
 }

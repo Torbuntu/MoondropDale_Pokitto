@@ -13,11 +13,9 @@ class SaveManager extends femto.Cookie {
     int tea;
     int greenBean;
     int tomato;
-    int cranberry;
     int blueberry;
     int magicFruit;
     
     int monies;
-    
     
 }

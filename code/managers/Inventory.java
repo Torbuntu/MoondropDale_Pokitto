@@ -32,7 +32,6 @@ class Inventory {
         tea = Globals.saveManager.tea;
         greenBean = Globals.saveManager.greenBean;
         tomato = Globals.saveManager.tomato;
-        cranberry = Globals.saveManager.cranberry;
         blueberry = Globals.saveManager.blueberry;
         magicFruit = Globals.saveManager.magicFruit;
         

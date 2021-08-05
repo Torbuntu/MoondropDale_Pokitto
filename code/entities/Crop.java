@@ -39,6 +39,7 @@ public class Crop {
     
     void render(){}
     
+    int getGrowth(){return growth;}
     int getType(){return type;}
     int getX(){return x;}
     int getY(){return y;}

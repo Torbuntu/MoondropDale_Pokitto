@@ -20,7 +20,7 @@ class Player {
     
     Player(){
         x = 20;
-        y = 74;
+        y = 64;
         
         face = 0;
         character = Globals.character;
@@ -43,27 +43,80 @@ class Player {
         System.out.println("Left");
         character == 1 ? tor.idleHori() : lol.idleHori();
         character == 1 ? tor.setMirrored(false) : lol.setMirrored(false);
-        if(face != 0)face = 0;
-        else x-=20;
+        switch(face){
+            case 0: break;
+            case 1:
+                y+=16;
+                break;
+            case 2:
+                // We jump over the player sprite
+                x-=20;
+                break;
+            case 3:
+                y-=16;
+                break;
+        }
+        x-=20;
+        face = 0;
     }
     void moveRight(){
         System.out.println("Right");
         character == 1 ? tor.idleHori() : lol.idleHori();
         character == 1 ? tor.setMirrored(true) : lol.setMirrored(true);
-        if(face != 2)face = 2;
-        else x += 20;
+        switch(face){
+            case 0: 
+                // We jump over the player sprite
+                x+=20;
+                break;
+            case 1:
+                y+=16;
+                break;
+            case 2: break;
+            case 3:
+                y-=16;
+                break;
+        }
+        x+=20;
+        face = 2;
+
     }
     void moveUp(){
         System.out.println("Up");
         character == 1 ? tor.idleUp() : lol.idleUp();
-        if(face != 1)face = 1;
-        else y -= 16;
+        switch(face){
+            case 0:
+                x+=20;
+                break;
+            case 1: break;
+            case 2:
+                x-=20;
+                break;
+            case 3:
+                // We jump over the player sprite
+                y-=16;
+                break;
+        }
+        y -= 16;
+        face = 1;
     }
     void moveDown(){
         System.out.println("Down");
         character == 1 ? tor.idleDown() : lol.idleDown();
-        if(face != 3) face = 3;
-        else y += 16;
+        switch(face){
+            case 0:
+                x+=20;
+                break;
+            case 1: 
+                // We jump over the player sprite
+                y += 16;
+                break;
+            case 2:
+                x-=20;
+                break;
+            case 3: break;
+        }
+        y += 16;
+        face = 3;
     }
     
 
@@ -71,28 +124,35 @@ class Player {
         flash++;
         if(flash>50)flash = 0;
         if(cursor && flash > 5){
-            switch(face){
-                case 0:
-                    screen.drawRect(x-w, y+6, 20, 16, 14);
-                    break;
-                case 1:
-                    screen.drawRect(x, y-10, 20, 16, 14);
-                    break;
-                case 2:
-                    screen.drawRect(x+w, y+6, 20, 16, 14);
-                    break;
-                case 3:
-                    screen.drawRect(x, y+h-2, 20, 16, 14);
-                    break;
-            }
-            
+            screen.drawRect(x, y, 20, 16, 14);
         }
+        
+        switch(face){
+            case 0:
+                drawPlayer(screen, x+20, y-8);
+                break;
+            case 1:
+                drawPlayer(screen, x, y+10);
+                break;
+            case 2:
+                drawPlayer(screen, x-20, y-8);
+                break;
+            case 3:
+                drawPlayer(screen, x, y-20);
+                break;
+        }
+            
+        
+        
+
+    }
+    
+    void drawPlayer(HiRes16Color screen, int x, int y){
         if(character == 1){
             tor.draw(screen, x, y);
         }else{
             lol.draw(screen, x, y);
         }
-
     }
     
     void dispose(){
