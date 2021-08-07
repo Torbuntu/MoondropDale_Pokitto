@@ -1,9 +1,12 @@
 package code.managers;
 
+import femto.mode.HiRes16Color;
 import code.Globals;
 
+import sprites.Hoe;
+
 class Inventory {
-    // 0:empty, 1:hoe, 2:water, 3:seed 
+    // 0:hoe, 1:water, 2:planter, 3:other? 
     int equipped = 0;
     
     // start with none
@@ -24,6 +27,9 @@ class Inventory {
     
     int monies;
     
+    
+    Hoe hoe;
+    
     Inventory(){
         turnip = Globals.saveManager.turnip;
         radish = Globals.saveManager.radish;
@@ -36,13 +42,19 @@ class Inventory {
         magicFruit = Globals.saveManager.magicFruit;
         
         monies = Globals.saveManager.monies;
+        
+        hoe = new Hoe();
+        hoe.hud();
     }
     
-    int getEquipped(){
-        return equipped;
+    void drawHud(HiRes16Color screen){
+        switch(equipped){
+            case 0:
+                hoe.draw(screen, screen.width()-40, screen.height()-16);
+                break;
+        }
+        
     }
+
     
-    void setSeed(int type){
-        equippedSeed = type;
-    }
 }
