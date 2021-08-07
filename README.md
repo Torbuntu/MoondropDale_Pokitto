@@ -1,7 +1,7 @@
 # Moondrop Dale - Pokitto
 
 # Building
-This project is built using [FemtoIDE](github.com/felipemanga/femtoIDE) for the [Pokitto](https://talk.pokitto.com/)
+This project is built using [FemtoIDE](https://github.com/felipemanga/femtoIDE) for the [Pokitto](https://talk.pokitto.com/)
 
 ## Crop types and growth data
 
