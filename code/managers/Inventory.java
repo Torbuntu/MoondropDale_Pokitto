@@ -4,6 +4,7 @@ import femto.mode.HiRes16Color;
 import code.Globals;
 
 import sprites.Hoe;
+import sprites.Water;
 
 class Inventory {
     // 0:hoe, 1:water, 2:planter, 3:other? 
@@ -29,6 +30,8 @@ class Inventory {
     
     
     Hoe hoe;
+    Water water;
+    int fill = 0;
     
     Inventory(){
         turnip = Globals.saveManager.turnip;
@@ -45,12 +48,20 @@ class Inventory {
         
         hoe = new Hoe();
         hoe.hud();
+        
+        water = new Water();
+        water.hud();
     }
     
+    // 0:hoe, 1:water, 2:planter, 3:other? 
     void drawHud(HiRes16Color screen){
         switch(equipped){
             case 0:
                 hoe.draw(screen, screen.width()-40, screen.height()-16);
+                break;
+            case 1:
+                water.draw(screen, screen.width()-40, screen.height()-16);
+                screen.drawVLine(screen.width()-22, screen.height()-fill-2, fill, 14);
                 break;
         }
         

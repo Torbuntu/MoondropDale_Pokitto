@@ -7,6 +7,8 @@ import femto.input.Button;
 import femto.palette.Psygnosia;
 import femto.font.TIC80;
 
+import images.Grass;
+
 import code.Globals;
 import code.Main;
 
@@ -18,7 +20,7 @@ import code.stages.Title;
 class Garden extends State {
     HiRes16Color screen;
     Player player;
-    
+    Grass grass;
     Crop[] crops;
     
     int hour,dayProgress, cursor;
@@ -29,6 +31,7 @@ class Garden extends State {
         screen = Globals.screen;
         player = new Player();
         byte[] field = Globals.load("field");
+        grass = new Grass();
         dayProgress = 0;
         hour=0;
         cursor = 0;
@@ -103,12 +106,16 @@ class Garden extends State {
                     }
                     break;
                 case 1:
-                    if(player.x >= 20 && player.x < 140 
-                    && player.y >= 64 && player.y < 160){
+                    // If at the pond, fill the water
+                    if(player.x < 50 && player.y < 36)player.inventory.fill = 8;
+                    
+                    else if(player.x >= 20 && player.x < 140 
+                    && player.y >= 64 && player.y < 160 && player.inventory.fill > 0){
                         int x = (player.x - 20)/20;
                         int y = (player.y - 64)/16;
                         // only water tilled soil and crops
                         if(crops[x+y*6].growth > 0){
+                            player.inventory.fill--;
                             crops[x+y*6].water = true;    
                         }
                     }
@@ -153,6 +160,15 @@ class Garden extends State {
         // Render
         screen.clear(7);
         
+        // Grass
+        //Vertical columns
+        for(int j = 0; j < 11; j++){
+            // Horizontal rows
+            for(int i = 0; i < 11; i++){
+                grass.draw(screen, i*20, j*16);
+            }
+        }
+        
         // pond
         screen.fillRect(0,0, 50,36, 14);
         screen.fillRect(36, 18, 30, 16, 8);
@@ -176,6 +192,9 @@ class Garden extends State {
         for(Crop c:crops){
             if(c.renderY > player.getRenderY() && c.type > 0) c.render(screen);
         }
+        
+        // Always render the cursor on top of all the crops
+        player.renderCursor(screen);
         
         // Render the HUD (equipped item, seed amount, Monies);
         screen.drawRect(screen.width()-40, screen.height()-16, 20, 16, 3);

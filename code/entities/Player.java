@@ -121,26 +121,28 @@ class Player {
     
 
     void render(HiRes16Color screen){
-
-        if(x >= 20 && x < 140 && y >= 64 && y < 160){
-            screen.drawRect(x, y, 20, 16, 14);
-        }
-        
         switch(face){
             case 0:
                 drawPlayer(screen, x+20, y-8);
                 break;
             case 1:
-                drawPlayer(screen, x, y+10);
+                drawPlayer(screen, x, y+8);
                 break;
             case 2:
                 drawPlayer(screen, x-20, y-8);
                 break;
             case 3:
-                drawPlayer(screen, x, y-20);
+                drawPlayer(screen, x, y-24);
                 break;
         }
 
+    }
+    
+    // To render the curosr always on top
+    void renderCursor(HiRes16Color screen){
+        if(x >= 20 && x < 140 && y >= 64 && y < 160){
+            screen.drawRect(x, y, 20, 16, 14);
+        }
     }
     
     /**
