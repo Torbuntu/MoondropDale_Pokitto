@@ -33,6 +33,7 @@ public class Globals {
     }
     
     public static void save(String path, byte[] data){
+        saveManager.saveCookie();
         File file = new File();
         if(file.openRW(path)){
             file.write(data);

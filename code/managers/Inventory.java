@@ -6,13 +6,14 @@ import code.Globals;
 import sprites.Hoe;
 import sprites.Water;
 import sprites.Planter;
+import sprites.Basket;
 
 class Inventory {
     // 0:hoe, 1:water, 2:planter, 3:other? 
     int equipped = 0;
     
-    // start with none
-    int equippedSeed = 0;
+    // start with 1 (even if we don't have seeds)
+    int equippedSeed = 1;
     
     // Seed quantity
     int turnip;
@@ -33,6 +34,7 @@ class Inventory {
     Hoe hoe;
     Water water;
     Planter planter;
+    Basket basket;
     
     int fill = 0;
     
@@ -57,6 +59,28 @@ class Inventory {
         
         planter = new Planter();
         planter.hud();
+        
+        basket = new Basket();
+        basket.hud();
+    }
+    
+    /**
+     * Manages increase in Monies when a crop
+     * is harvested.     
+     */ 
+    void harvest(int id){
+        switch(id){
+            case 0: break;
+            case 1: monies += 10;break;
+            case 2: monies += 10;break;
+            case 3: monies += 10;break;
+            case 4: monies += 10;break;
+            case 5: monies += 10;break;
+            case 6: monies += 10;break;
+            case 7: monies += 10;break;
+            case 8: monies += 10;break;
+            case 9: monies += 10;break;
+        }
     }
     
     // 0:hoe, 1:water, 2:planter, 3:other? 
@@ -77,10 +101,9 @@ class Inventory {
                 screen.print(equippedSeed);
                 break;
             case 3:
+                basket.draw(screen, screen.width()-20, screen.height()-16);
                 break;
         }
-        
     }
-
     
 }

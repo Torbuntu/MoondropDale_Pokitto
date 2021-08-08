@@ -132,8 +132,14 @@ class Garden extends State {
                     }
                     break;
                 case 3:
-                    // Hand for harvesting
-                    
+                    // Basket for harvesting
+                    if(player.x >= 20 && player.x < 140 
+                    && player.y >= 64 && player.y < 160){
+                        int x = (player.x - 20)/20;
+                        int y = (player.y - 64)/16;
+                        // this will remove any growing crop and un-water
+                        player.inventory.harvest(crops[x+y*6].harvest());
+                    }
                     break;
             }
 
@@ -216,12 +222,19 @@ class Garden extends State {
         screen.setTextPosition(43, 43);
         screen.print("-- Menu --");
         
+        // Seed Select (cursor == 0)
         screen.setTextPosition(45, 43+8);
         if(cursor == 0)screen.print("> ");
         screen.print("Seed to plant: " + player.inventory.equippedSeed);
         
+        // Seed Shop (cursor == 1)
         screen.setTextPosition(45, 43+16);
         if(cursor == 1)screen.print("> ");
+        screen.print("Enter Seed Shop");
+        
+        // Save and quit (cursor == 2)
+        screen.setTextPosition(45, 43+32);
+        if(cursor == 2)screen.print("> ");
         screen.print("Save & Quit");
         
         if(Button.Up.justPressed())cursor--;
@@ -231,21 +244,26 @@ class Garden extends State {
         
         
         if(Button.Left.justPressed()){
-            
+            if(cursor == 0){
+                player.inventory.equippedSeed--;
+                if(player.inventory.equippedSeed < 1)player.inventory.equippedSeed = 9;
+            }
         }
         if(Button.Right.justPressed()){
-            
+            if(cursor == 0){
+                player.inventory.equippedSeed++;
+                if(player.inventory.equippedSeed > 9)player.inventory.equippedSeed = 1;
+            }
         }
         
         if(Button.A.justPressed()){
-            if(cursor == 1){
+            if(cursor == 2){
                 saveAndQuit();
             }
         }
         
         if(Button.B.justPressed()){
-            player.inventory.equippedSeed++;
-            if(player.inventory.equippedSeed > 9)player.inventory.equippedSeed = 0;
+
         }
         
         if(Button.C.justPressed())pause=false;

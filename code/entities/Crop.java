@@ -77,6 +77,20 @@ public class Crop {
         growth = 1;
         water = false;
     }
+    
+    /**
+     * Returns the Crop ID of what has been harvested.
+     * If the spot is empty, returns 0
+     */ 
+    int harvest(){
+        if(type == 0)return 0;
+        
+        int id = type;
+        type = 0;
+        growth = 0;
+        water = false;
+        return id;
+    }
 
     /**
      * At the end of a day, we need to progress the crops.
