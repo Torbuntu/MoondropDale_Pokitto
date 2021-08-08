@@ -23,7 +23,7 @@ class Garden extends State {
     Grass grass;
     Crop[] crops;
     
-    int hour,dayProgress, cursor;
+    int hour, dayProgress, cursor;
     
     boolean pause = false;
     
@@ -60,12 +60,12 @@ class Garden extends State {
         player.dispose();
         player = null;
         crops = null;
+        grass = null;
     }
     
     void update(){
         if(pause){
             handheldMenu();
-            
             // We don't want to progress with any other details while in the handheld menu.
             return;
         }
@@ -100,9 +100,7 @@ class Garden extends State {
                         int x = (player.x - 20)/20;
                         int y = (player.y - 64)/16;
                         // this will remove any growing crop and un-water
-                        crops[x+y*6].type=0;
-                        crops[x+y*6].growth = 1;
-                        crops[x+y*6].water = false;
+                        crops[x+y*6].till();
                     }
                     break;
                 case 1:
@@ -113,10 +111,11 @@ class Garden extends State {
                     && player.y >= 64 && player.y < 160 && player.inventory.fill > 0){
                         int x = (player.x - 20)/20;
                         int y = (player.y - 64)/16;
+                        int id = x+y*6;
                         // only water tilled soil and crops
-                        if(crops[x+y*6].growth > 0){
+                        if(crops[id].growth > 0){
                             player.inventory.fill--;
-                            crops[x+y*6].water = true;    
+                            crops[id].water = true;    
                         }
                     }
                     break;
@@ -125,9 +124,10 @@ class Garden extends State {
                     && player.y >= 64 && player.y < 160){
                         int x = (player.x - 20)/20;
                         int y = (player.y - 64)/16;
+                        int id = x+y*6;
                         // only plant a crop if the soil is tilled and no plant exists
-                        if(crops[x+y*6].type == 0 && crops[x+y*6].growth > 0){
-                            crops[x+y*6].plant(player.inventory.equippedSeed);
+                        if(crops[id].type == 0 && crops[id].growth == 1){
+                            crops[id].plant(player.inventory.equippedSeed);
                         }
                     }
                     break;
@@ -197,30 +197,7 @@ class Garden extends State {
         player.renderCursor(screen);
         
         // Render the HUD (equipped item, seed amount, Monies);
-        screen.drawRect(screen.width()-40, screen.height()-16, 20, 16, 3);
         player.inventory.drawHud(screen);
-        
-        
-        screen.drawRect(screen.width()-20, screen.height()-16, 20, 16, 3);
-        screen.setTextColor(1);
-        screen.setTextPosition(screen.width()-38, screen.height()-16);
-        switch(player.inventory.equipped){
-            case 0:
-                screen.print("H");
-                break;
-            case 1:
-                screen.print("W");
-                break;
-            case 2:
-                screen.print("P");
-                break;
-            case 3:
-                screen.print("?");
-                break;
-        }
-        
-        screen.setTextPosition(screen.width()-18, screen.height()-16);
-        screen.print(player.inventory.equippedSeed);
         
         // Render day progression
         screen.drawHLine(0, screen.height()-1, dayProgress, 12);

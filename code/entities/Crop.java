@@ -71,6 +71,12 @@ public class Crop {
         growth = 2;
         initCrop();
     }
+    
+    public void till(){
+        type = 0;
+        growth = 1;
+        water = false;
+    }
 
     /**
      * At the end of a day, we need to progress the crops.
@@ -80,11 +86,17 @@ public class Crop {
      * then the crop will need to die :( 
      */
     void update(){
+        if(type == 0){
+            if(water)water = false;
+            else growth = 0;
+            return;
+        }
         if(growth > 1 && water){
             water = false;
             // 9 is max growth mano
             if(growth < 9)growth++;
         }
+        
         switch(type){
             case 0:break;
             case 1:break;
@@ -94,7 +106,6 @@ public class Crop {
         }
         // TODO: Something here about growing sprites per crops 1-9
     }
-    
     
     void updateTurnip(){
         if(growth > 3){
