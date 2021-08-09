@@ -80,11 +80,13 @@ public class Crop {
     
     /**
      * Returns the Crop ID of what has been harvested.
-     * If the spot is empty, returns 0
+     * If the spot is empty, returns 0.
+     * 
+     * If the Crop isn't harvestable, return 0;
      */ 
     int harvest(){
         if(type == 0)return 0;
-        
+        if(growth < 7)return 0;
         int id = type;
         type = 0;
         growth = 0;

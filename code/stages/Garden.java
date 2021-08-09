@@ -17,15 +17,28 @@ import code.entities.Crop;
 
 import code.stages.Title;
 
+import sprites.Hoe;
+import sprites.Planter;
+import sprites.Water;
+
 class Garden extends State {
     HiRes16Color screen;
     Player player;
     Grass grass;
     Crop[] crops;
     
+    Hoe hoe;
+    int swingHoe = 0;
+    
+    Planter planter;
+    int swingPlanter = 0;
+    
+    Water water;
+    int swingWater = 0;
+    
     int hour, dayProgress, cursor;
     
-    boolean pause = false;
+    boolean pause = false, move = true;
     
     void init(){
         screen = Globals.screen;
@@ -53,6 +66,9 @@ class Garden extends State {
             id++;
         }
         
+        hoe = new Hoe();
+        planter = new Planter();
+        water = new Water();
     }
     
     void shutdown(){
@@ -95,41 +111,13 @@ class Garden extends State {
             // 0:hoe, 1:water, 2:planter, 3:other? 
             switch(player.inventory.equipped){
                 case 0:
-                    if(player.x >= 20 && player.x < 140 
-                    && player.y >= 64 && player.y < 160){
-                        int x = (player.x - 20)/20;
-                        int y = (player.y - 64)/16;
-                        // this will remove any growing crop and un-water
-                        crops[x+y*6].till();
-                    }
+                    useHoe();
                     break;
                 case 1:
-                    // If at the pond, fill the water
-                    if(player.x < 50 && player.y < 36)player.inventory.fill = 8;
-                    
-                    else if(player.x >= 20 && player.x < 140 
-                    && player.y >= 64 && player.y < 160 && player.inventory.fill > 0){
-                        int x = (player.x - 20)/20;
-                        int y = (player.y - 64)/16;
-                        int id = x+y*6;
-                        // only water tilled soil and crops
-                        if(crops[id].growth > 0){
-                            player.inventory.fill--;
-                            crops[id].water = true;    
-                        }
-                    }
+                    useWater();
                     break;
                 case 2:
-                    if(player.x >= 20 && player.x < 140 
-                    && player.y >= 64 && player.y < 160){
-                        int x = (player.x - 20)/20;
-                        int y = (player.y - 64)/16;
-                        int id = x+y*6;
-                        // only plant a crop if the soil is tilled and no plant exists
-                        if(crops[id].type == 0 && crops[id].growth == 1){
-                            crops[id].plant(player.inventory.equippedSeed);
-                        }
-                    }
+                    usePlanter();
                     break;
                 case 3:
                     // Basket for harvesting
@@ -150,17 +138,20 @@ class Garden extends State {
         }
         
         // handle movement
-        if(Button.Left.justPressed()){
-            player.moveLeft();
-        }
-        if(Button.Right.justPressed()){
-            player.moveRight();
-        }
-        if(Button.Up.justPressed()){
-            player.moveUp();
-        }
-        if(Button.Down.justPressed()){
-            player.moveDown();
+        if( move ){
+        
+            if(Button.Left.justPressed()){
+                player.moveLeft();
+            }
+            if(Button.Right.justPressed()){
+                player.moveRight();
+            }
+            if(Button.Up.justPressed()){
+                player.moveUp();
+            }
+            if(Button.Down.justPressed()){
+                player.moveDown();
+            }
         }
         
         // Render
@@ -188,12 +179,33 @@ class Garden extends State {
         
         // crops
         for(Crop c:crops){
-            screen.drawRect(20+c.getX()*20, 64+c.getY()*16, 20, 16, c.getType()+5);
             if(c.renderY < player.getRenderY() || c.type == 0)c.render(screen);
         }
         
+        // Swinging tools
+        if(swingHoe > 0){
+            swingHoe--;
+            hoe.swing();
+            hoe.draw(screen, player.x, player.y);
+            if(swingHoe == 0) move = true;
+        }
+        if(swingPlanter > 0){
+            swingPlanter--;
+            planter.swing();
+            planter.draw(screen, player.x, player.y);
+            if(swingPlanter == 0) move = true;
+        }
+        if(swingWater > 0){
+            swingWater--;
+            water.swing();
+            water.draw(screen, player.x, player.y);
+            if(swingWater == 0) move = true;
+        }    
+    
+        
         // Render player in between plants that are over or under.
         player.render(screen);
+
         
         for(Crop c:crops){
             if(c.renderY > player.getRenderY() && c.type > 0) c.render(screen);
@@ -269,6 +281,59 @@ class Garden extends State {
         if(Button.C.justPressed())pause=false;
         
         screen.flush();
+    }
+    
+    void useHoe(){
+        if(player.x >= 20 && player.x < 140 
+        && player.y >= 64 && player.y < 160){
+            int x = (player.x - 20)/20;
+            int y = (player.y - 64)/16;
+            // this will remove any growing crop and un-water
+            crops[x+y*6].till();
+            swingHoe = 20;
+            move = false;
+            if(player.face == 2)hoe.setMirrored(true);
+            else hoe.setMirrored(false);
+        }
+    }
+    
+    void useWater(){
+        // If at the pond, fill the water
+        if(player.x < 50 && player.y < 36)player.inventory.fill = 8;
+        
+        else if(player.x >= 20 && player.x < 140 
+        && player.y >= 64 && player.y < 160 && player.inventory.fill > 0){
+            int x = (player.x - 20)/20;
+            int y = (player.y - 64)/16;
+            int id = x+y*6;
+            // only water tilled soil and crops
+            if(crops[id].growth > 0){
+                player.inventory.fill--;
+                crops[id].water = true;  
+                if(player.face == 2)water.setMirrored(true);
+                else water.setMirrored(false);
+                swingWater = 20;
+                move = false;
+            }
+        }
+    }
+    
+    // TODO: Check that player has quantity of crop to plant
+    void usePlanter(){
+        if(player.x >= 20 && player.x < 140 
+        && player.y >= 64 && player.y < 160){
+            int x = (player.x - 20)/20;
+            int y = (player.y - 64)/16;
+            int id = x+y*6;
+            // only plant a crop if the soil is tilled and no plant exists
+            if(crops[id].type == 0 && crops[id].growth == 1){
+                if(player.face == 2)planter.setMirrored(true);
+                else planter.setMirrored(false);
+                crops[id].plant(player.inventory.equippedSeed);
+                swingPlanter = 20;
+                move = false;
+            }
+        }
     }
     
     void saveAndQuit(){

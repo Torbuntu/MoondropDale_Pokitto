@@ -30,7 +30,6 @@ class Inventory {
     
     int monies;
     
-    
     Hoe hoe;
     Water water;
     Planter planter;
