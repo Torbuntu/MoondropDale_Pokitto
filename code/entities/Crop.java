@@ -12,8 +12,10 @@ import sprites.Tomato;
 import sprites.Blueberry;
 import sprites.MagicFruit;
 
+import sprites.Sapling;
+
 public class Crop {
-    int type, growth, x, y;
+    int type, growth, x, y, wet;
     int renderX, renderY;
     boolean water;
     
@@ -27,6 +29,8 @@ public class Crop {
     Blueberry blueberry;//8
     MagicFruit magicFruit;//9
     
+    Sapling sapling;
+    
     // TODO: Figure out how long each crop will take in days to reach Harvest
     
     public Crop(int type, int growth, int x, int y){
@@ -37,12 +41,14 @@ public class Crop {
         this.renderX = 20+x*20;
         this.renderY = 48+y*16;
         
+        wet = 0;
         
         water = false;
         initCrop();
     }
     
     private void initCrop(){
+        sapling = new Sapling();
         switch(type){
             case 1:
                 turnip = new Turnip();
@@ -76,6 +82,11 @@ public class Crop {
         type = 0;
         growth = 1;
         water = false;
+    }
+    
+    public void setWater(){
+        water = true;
+        wet = 40;
     }
     
     /**
@@ -291,7 +302,6 @@ public class Crop {
     }
     
     void render(HiRes16Color screen){
-        
         // If watered, we draw a dark plot
         if(water){
             screen.fillRect(renderX, renderY+16, 20, 16, 8);
@@ -317,10 +327,12 @@ public class Crop {
                     if(!water)screen.fillRect(renderX, renderY+16, 20, 16, 7);
                     break;
                 case 2:
-                    screen.fillCircle(renderX+10, renderY+28, 3, 3);
+                    sapling.seed();
+                    sapling.draw(screen, renderX, renderY+16);
                     break;
                 case 3:
-                    screen.drawVLine(renderX+8, renderY+24, 5, 9);
+                    sapling.saplingSmall();
+                    sapling.draw(screen, renderX, renderY+16);
                     break;
             }
         }else{
@@ -341,11 +353,10 @@ public class Crop {
             }
         }
         
+        if(wet > 0){
+            wet--;
+            screen.drawCircle(renderX+10, renderY+24, (int)(8/wet), 14);
+        }
+        
     }
-
-    
-    int getGrowth(){return growth;}
-    int getType(){return type;}
-    int getX(){return x;}
-    int getY(){return y;}
 }

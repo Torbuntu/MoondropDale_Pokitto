@@ -23,7 +23,7 @@ class Player {
         y = 64;
         
         face = 0;
-        character = Globals.character;
+        character = Globals.saveManager.character == 0 ? 2 : Globals.saveManager.character;
         if(character == 1){
             tor = new Tor();
             tor.idleHori();
@@ -173,5 +173,6 @@ class Player {
     
     void dispose(){
         tor = null;
+        lol = null;
     }
 }

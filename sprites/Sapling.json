@@ -1,0 +1,38 @@
+{ "frames": [
+   {
+    "filename": "Sapling 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 16, "h": 13 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 1, "y": 2, "w": 16, "h": 13 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Sapling 1.aseprite",
+    "frame": { "x": 16, "y": 0, "w": 16, "h": 13 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 1, "y": 2, "w": 16, "h": 13 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.28-x64",
+  "image": "Sapling.png",
+  "format": "I8",
+  "size": { "w": 32, "h": 13 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "seed", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "saplingSmall", "from": 1, "to": 1, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

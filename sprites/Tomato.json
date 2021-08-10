@@ -1,37 +1,46 @@
 { "frames": [
    {
     "filename": "Tomato 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 16, "h": 27 },
+    "frame": { "x": 0, "y": 0, "w": 20, "h": 31 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 1, "y": 4, "w": 16, "h": 27 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
     "sourceSize": { "w": 20, "h": 32 },
     "duration": 100
    },
    {
     "filename": "Tomato 1.aseprite",
-    "frame": { "x": 16, "y": 0, "w": 16, "h": 27 },
+    "frame": { "x": 20, "y": 0, "w": 20, "h": 31 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 1, "y": 4, "w": 16, "h": 27 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
     "sourceSize": { "w": 20, "h": 32 },
     "duration": 100
    },
    {
     "filename": "Tomato 2.aseprite",
-    "frame": { "x": 32, "y": 0, "w": 16, "h": 27 },
+    "frame": { "x": 40, "y": 0, "w": 20, "h": 31 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 1, "y": 4, "w": 16, "h": 27 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
     "sourceSize": { "w": 20, "h": 32 },
     "duration": 100
    },
    {
     "filename": "Tomato 3.aseprite",
-    "frame": { "x": 48, "y": 0, "w": 16, "h": 27 },
+    "frame": { "x": 60, "y": 0, "w": 20, "h": 31 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 1, "y": 4, "w": 16, "h": 27 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
+    "sourceSize": { "w": 20, "h": 32 },
+    "duration": 100
+   },
+   {
+    "filename": "Tomato 4.aseprite",
+    "frame": { "x": 80, "y": 0, "w": 20, "h": 31 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
     "sourceSize": { "w": 20, "h": 32 },
     "duration": 100
    }
@@ -41,13 +50,14 @@
   "version": "1.2.28-x64",
   "image": "Tomato.png",
   "format": "I8",
-  "size": { "w": 64, "h": 27 },
+  "size": { "w": 100, "h": 31 },
   "scale": "1",
   "frameTags": [
    { "name": "four", "from": 0, "to": 0, "direction": "forward" },
    { "name": "five", "from": 1, "to": 1, "direction": "forward" },
    { "name": "six", "from": 2, "to": 2, "direction": "forward" },
-   { "name": "harvest", "from": 3, "to": 3, "direction": "forward" }
+   { "name": "harvest", "from": 3, "to": 3, "direction": "forward" },
+   { "name": "hud", "from": 4, "to": 4, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }

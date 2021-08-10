@@ -35,3 +35,44 @@ Any crop (T) that is growth < 4 && > 1 (2 and 3) will render
 the same Seed then Sapling before specific crop sprites.
 
 
+
+## TODO
+
+- Finish the shop view. 
+  - The shop will display each available seed option. 
+  - The unavailable will show some sort of "locked" icon. 
+    - Maybe when a locked item is hilighted, it will give a hint to unlock it.
+  - Available seed options will show a price and current quantity when hilighted.
+  
+  
+- Add the currency to the pause menu so players know how much money they have.
+
+- Add a day transition view.
+  - Show how much money was earned, if any.
+  - Give a little story info? (like "it will be a nice day" or "It will be rainy tomorrow!")
+  
+- Add progression system for crops.
+
+- Update/Finish Crop growth cycles.
+
+- Update/add Crops harvest sales. 
+ 
+- Add weather.
+  - Right now maybe just rain or nah.
+  
+- Update/Add animations
+  - Crops
+  - Tool usage
+    - When used, the affected tile should be animated somehow
+  - Harvest + Money earned animation
+  - Movement(?)
+  - Rain
+  - Water in the pond
+  
+- Add sfx and music
+
+- Add Title menu (start/new game, delete data)
+
+- Finish/Update character select screen (after Title screen if New Game selected)
+
+

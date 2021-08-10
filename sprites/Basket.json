@@ -1,6 +1,46 @@
 { "frames": {
-   "Basket.aseprite": {
+   "Basket 0.aseprite": {
     "frame": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   "Basket 1.aseprite": {
+    "frame": { "x": 20, "y": 0, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   "Basket 2.aseprite": {
+    "frame": { "x": 40, "y": 0, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   "Basket 3.aseprite": {
+    "frame": { "x": 60, "y": 0, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   "Basket 4.aseprite": {
+    "frame": { "x": 80, "y": 0, "w": 20, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "sourceSize": { "w": 20, "h": 16 },
+    "duration": 100
+   },
+   "Basket 5.aseprite": {
+    "frame": { "x": 100, "y": 0, "w": 20, "h": 16 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
@@ -13,10 +53,11 @@
   "version": "1.2.28-x64",
   "image": "Basket.png",
   "format": "I8",
-  "size": { "w": 20, "h": 16 },
+  "size": { "w": 120, "h": 16 },
   "scale": "1",
   "frameTags": [
-   { "name": "hud", "from": 0, "to": 0, "direction": "forward" }
+   { "name": "hud", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "swing", "from": 1, "to": 5, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
