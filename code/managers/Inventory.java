@@ -38,18 +38,7 @@ class Inventory {
     int blueberryQ; 7
     int magicFruitQ;8
     */
-    
-    // Seed available progress
-    boolean turnipL;
-    boolean radishL;
-    boolean daisyL;
-    boolean coffeeL;
-    boolean teaL;
-    boolean greenBeanL;
-    boolean tomatoL;
-    boolean blueberryL;
-    boolean magicFruitL;
-    
+
     int monies;
     
     Hoe hoe;
@@ -121,7 +110,9 @@ class Inventory {
     
     /**
      * Manages increase in Monies when a crop
-     * is harvested.     
+     * is harvested.    
+     * 
+     * TODO: update the prices to be accurate
      */ 
     void harvest(int id){
         switch(id){
@@ -144,6 +135,16 @@ class Inventory {
     
     public void planted(){
         quantities[equippedSeed]--;
+    }
+    
+    public boolean buySuccess(int id){
+        if(monies > 10 && locks[id]){
+            monies-=10;
+            quantities[id]++;
+        }else{
+            return false;
+        }
+        return true;
     }
     
     // 0:hoe, 1:water, 2:planter, 3:other? 
@@ -198,14 +199,11 @@ class Inventory {
         }
     }
     
-    public void drawSeed(HiRes16Color screen){
+    public void drawSeed(HiRes16Color screen, int id){
         screen.setTextPosition(140, 90);
-        screen.print("x"+quantities[equippedSeed]);
-        switch(equippedSeed){
-            case 0:
-                if(locks[0])turnip.draw(screen, 146, 72);
-                else screen.fillRect(145, 72, 20, 16, 12);
-                break;
+        screen.print("x"+quantities[id]);
+        switch(id){
+            case 0:if(locks[0])turnip.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
             case 1:if(locks[1])radish.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
             case 2:if(locks[2])daisy.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
             case 3:if(locks[3])coffee.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
@@ -215,6 +213,10 @@ class Inventory {
             case 7:if(locks[7])blueberry.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
             case 8:if(locks[8])magicFruit.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
         }
+    }
+    
+    public void drawSeed(HiRes16Color screen){
+        drawSeed(screen, equippedSeed);
     }
     
 }

@@ -75,4 +75,10 @@ the same Seed then Sapling before specific crop sprites.
 
 - Finish/Update character select screen (after Title screen if New Game selected)
 
+- Change "real" crops for pretend ones.
+
+- Move the Crop rendering logic outside of the Crop object. 
+- Crop objects will only store data (type, growth, x, y, watered) allowing a LOT more of them to be stored at once.
+- Only store actual Crops in the array. Update the `field` file to accept 4 data parameters per crop (type, growth, x, y). This way we only store actual crops and not empty items.
+
 

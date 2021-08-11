@@ -2,6 +2,9 @@ package code.entities;
 
 import femto.mode.HiRes16Color;
 
+
+//TODO: Render crops separately. No need to store this here.
+/*
 import sprites.Turnip;
 import sprites.Radish;
 import sprites.Daisy;
@@ -13,12 +16,13 @@ import sprites.Blueberry;
 import sprites.MagicFruit;
 
 import sprites.Sapling;
-
+*/
 public class Crop {
     int type, growth, x, y, wet;
     int renderX, renderY;
     boolean water;
     
+    /*
     Turnip turnip;//1
     Radish radish;//2
     Daisy daisy;//3
@@ -30,6 +34,8 @@ public class Crop {
     MagicFruit magicFruit;//9
     
     Sapling sapling;
+    */
+    final private int w = 10, h = 8;
     
     // TODO: Figure out how long each crop will take in days to reach Harvest
     
@@ -38,8 +44,8 @@ public class Crop {
         this.growth = growth;
         this.x = x;
         this.y = y;
-        this.renderX = 20+x*20;
-        this.renderY = 48+y*16;
+        this.renderX = w+x*w;
+        this.renderY = 40+y*h;
         
         wet = 0;
         
@@ -48,24 +54,47 @@ public class Crop {
     }
     
     private void initCrop(){
+        /*
         sapling = new Sapling();
         switch(type){
             case 1:
                 turnip = new Turnip();
-                turnip.harvest();
+                turnip.four();
                 break;
             case 2:
                 radish = new Radish();
+                radish.four();
                 break;
             case 3:
                 daisy = new Daisy();
-                daisy.harvest();
+                daisy.four();
                 break;
             case 4:
                 greenBean = new GreenBean();
-                greenBean.harvest();
+                greenBean.four();
+                break;
+            case 5:
+                coffee = new Coffee();
+                coffee.four();
+                break;
+            case 6: 
+                tea = new Tea();
+                tea.four();
+                break;
+            case 7:
+                tomato = new Tomato();
+                tomato.four();
+                break;
+            case 8:
+                blueberry = new Blueberry();
+                blueberry.four();
+                break;
+            case 9:
+                magicFruit = new MagicFruit();
+                magicFruit.four();
                 break;
         }
+        */
     }
     
     /**
@@ -123,17 +152,22 @@ public class Crop {
             // 9 is max growth mano
             if(growth < 9)growth++;
         }
-        
+        /*
         switch(type){
             case 0:break;
-            case 1:break;
-            case 2:
-                updateRadish();
-                break;
-        }
+            case 1:updateTurnip();break;
+            case 2:updateRadish();break;
+            case 3:updateDaisy();break;
+            case 4:updateGreenBean();break;
+            case 5:updateCoffee();break;
+            case 6:updateTea();break;
+            case 7:updateTomato();break;
+            case 8:updateBlueberry();break;
+            case 9:updateMagicFruit();break;
+        }*/
         // TODO: Something here about growing sprites per crops 1-9
     }
-    
+    /*
     void updateTurnip(){
         if(growth > 3){
             switch(growth){
@@ -300,20 +334,21 @@ public class Crop {
             }
         }
     }
-    
+    */
     void render(HiRes16Color screen){
+        /*
         // If watered, we draw a dark plot
         if(water){
-            screen.fillRect(renderX, renderY+16, 20, 16, 8);
+            screen.fillRect(renderX, renderY+h, w, h, 8);
         }else{
             // For dry plots, if it is NOT tilled (growth < 1) draw a light plot.
             // We return from here because no point checking anything else if empty.
             if(growth < 1) {
-                screen.fillRect(renderX, renderY+16, 20, 16, 6);
+                screen.fillRect(renderX, renderY+h, w, h, 6);
                 return;
             }else{
                 // Tilled plots get medium brown.
-                screen.fillRect(renderX, renderY+16, 20, 16, 7);
+                screen.fillRect(renderX, renderY+h, w, h, 7);
             }
         }
         
@@ -324,15 +359,15 @@ public class Crop {
                     // TODO: render something to show it is tillable?
                     break;
                 case 1:
-                    if(!water)screen.fillRect(renderX, renderY+16, 20, 16, 7);
+                    if(!water)screen.fillRect(renderX, renderY+h, w, h, 7);
                     break;
                 case 2:
                     sapling.seed();
-                    sapling.draw(screen, renderX, renderY+16);
+                    sapling.draw(screen, renderX, renderY+h);
                     break;
                 case 3:
                     sapling.saplingSmall();
-                    sapling.draw(screen, renderX, renderY+16);
+                    sapling.draw(screen, renderX, renderY+h);
                     break;
             }
         }else{
@@ -357,6 +392,6 @@ public class Crop {
             wet--;
             screen.drawCircle(renderX+10, renderY+24, (int)(8/wet), 14);
         }
-        
+        */
     }
 }

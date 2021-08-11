@@ -15,6 +15,8 @@ import code.Main;
 import code.entities.Player;
 import code.entities.Crop;
 
+import code.managers.Inventory;
+
 import code.stages.Title;
 
 import sprites.Hoe;
@@ -26,9 +28,9 @@ import sprites.Basket;
 class Garden extends State {
     HiRes16Color screen;
     Player player;
+    Inventory inventory;
     Grass grass;
     Crop[] crops;
-    
     Hoe hoe;
     int swingHoe = 0;
     
@@ -43,27 +45,32 @@ class Garden extends State {
     
     Pond pond;
     
-    int hour, dayProgress, cursor;
+    int hour, dayProgress, cursor, day;
     
     boolean pause = false, move = true, shop = false;
     
+    final private int w = 10, h = 8;
+    
     void init(){
         screen = Globals.screen;
-        player = new Player();
+        day = Globals.saveManager.day;
+        int playerId = Globals.character == 0 ? 2 : Globals.character;
+        player = new Player(playerId);
+        inventory = new Inventory();
        
         grass = new Grass();
         dayProgress = 0;
         hour=0;
         cursor = 0;
-        
         // TODO: Fix this nonsense.
         byte[] field = Globals.load("field");
-        crops = new Crop[36];
+        crops = new Crop[80];
         int y = 0;
         int x = 0;
         int id = 0;
-        for(int i =0; i < 72; i+=2){
-            if(id > 35)return;
+        for(int i =0; i < 160; i+=2){
+            System.out.println(id);
+            if(id > 80)return;
             crops[id] = new Crop( field[i], field[i+1], x, y );
             x++;
             if(x > 5){
@@ -73,7 +80,7 @@ class Garden extends State {
             if(y > 5)y=0;
             id++;
         }
-        
+
         pond = new Pond();
         pond.wave();
         
@@ -87,6 +94,7 @@ class Garden extends State {
         screen = null;
         player.dispose();
         player = null;
+        inventory = null;
         crops = null;
         grass = null;
         
@@ -118,9 +126,9 @@ class Garden extends State {
         
         // Shift equipped item
         if(Button.B.justPressed()){
-            player.inventory.equipped++;
-            if(player.inventory.equipped > 3){
-                player.inventory.equipped = 0;
+            inventory.equipped++;
+            if(inventory.equipped > 3){
+                inventory.equipped = 0;
             }
         }
         
@@ -134,7 +142,7 @@ class Garden extends State {
         if( move ){
             if( Button.A.justPressed() ){
                 // 0:hoe, 1:water, 2:planter, 3:other? 
-                switch(player.inventory.equipped){
+                switch(inventory.equipped){
                     case 0:
                         useHoe();
                         break;
@@ -188,7 +196,7 @@ class Garden extends State {
         player.renderCursor(screen);
         
         // Render the HUD (equipped item, seed amount, Monies);
-        player.inventory.drawHud(screen);
+        inventory.drawHud(screen);
         
         // Render day progression
         screen.drawHLine(0, 175, dayProgress, 12);
@@ -199,18 +207,45 @@ class Garden extends State {
     void seedShop(){
         screen.setTextColor(10);
         screen.setTextPosition(43, 43);
-        screen.print("Coming Soon!");
+        screen.print("-- Seed Shop --");
+        
+        screen.setTextPosition(45, 56);
+        screen.print("$$: " + inventory.monies);
         
         // List available seeds.
+        screen.setTextPosition(45, 78);
+        screen.print("> Seed to Buy: ");
+        inventory.drawSeed(screen, cursor);
         
+        screen.setTextPosition(45, 126);
+        screen.print("[B - Back]");
+        
+        if(Button.Right.justPressed()){
+            if(cursor < 8)cursor++;
+            else cursor = 0;
+        }
+        if(Button.Left.justPressed()){
+            if(cursor > 0)cursor--;
+            else cursor = 8;
+        }
+        
+        if(Button.A.justPressed()){
+            if(inventory.buySuccess(cursor)){
+                // Play cash chaching
+            }else{
+                // Play donk sound for no monies
+            }
+        }
         
         if(Button.B.justPressed()){
             shop = false;
+            cursor = 2;
         }
         screen.flush();
     }
     
     void handheldMenu(){
+        // TODO: Replace manual drawing with nice device images.
         screen.fillRect(30, 30, 160, 116, 9);
         
         screen.fillRect(15, 60, 190, 20, 9);
@@ -230,13 +265,13 @@ class Garden extends State {
         screen.setTextPosition(45, 56);
         if(cursor == 0)screen.print("> ");
         screen.print("Tool Equipped: ");
-        player.inventory.drawTool(screen);
+        inventory.drawTool(screen);
         
         // Seed Select (cursor == 1)
         screen.setTextPosition(45, 78);
         if(cursor == 1)screen.print("> ");
-        screen.print("Seed to plant: ");
-        player.inventory.drawSeed(screen);
+        screen.print("Seed to Plant: ");
+        inventory.drawSeed(screen);
         
         // Seed Shop (cursor == 2)
         screen.setTextPosition(45, 100);
@@ -256,29 +291,30 @@ class Garden extends State {
         
         if(Button.Left.justPressed()){
             if(cursor==0){
-                if(player.inventory.equipped > 0){
-                    player.inventory.equipped--;
+                if(inventory.equipped > 0){
+                    inventory.equipped--;
                 }
             }
             if(cursor == 1){
-                player.inventory.equippedSeed--;
-                if(player.inventory.equippedSeed < 0)player.inventory.equippedSeed = 8;
+                inventory.equippedSeed--;
+                if(inventory.equippedSeed < 0)inventory.equippedSeed = 8;
             }
         }
         if(Button.Right.justPressed()){
             if(cursor==0){
-                if(player.inventory.equipped < 3){
-                    player.inventory.equipped++;
+                if(inventory.equipped < 3){
+                    inventory.equipped++;
                 }
             }
             if(cursor == 1){
-                player.inventory.equippedSeed++;
-                if(player.inventory.equippedSeed > 8)player.inventory.equippedSeed = 0;
+                inventory.equippedSeed++;
+                if(inventory.equippedSeed > 8)inventory.equippedSeed = 0;
             }
         }
         
         if(Button.A.justPressed()){
             if(cursor == 2){
+                cursor = 0;
                 shop = true;
             }
             if(cursor == 3){
@@ -308,13 +344,13 @@ class Garden extends State {
     
     void useWater(){
         // If at the pond, fill the water
-        if(player.x < 50 && player.y < 36)player.inventory.fill = 8;
+        if(player.x < 50 && player.y < 36)inventory.fill = 8;
         
-        else if(inField() && player.inventory.fill > 0){
+        else if(inField() && inventory.fill > 0){
             int id = getFieldId();
             // only water tilled soil and crops
             if(crops[id].growth > 0){
-                player.inventory.fill--;
+                inventory.fill--;
                 crops[id].setWater();
                 if(player.face == 2)water.setMirrored(true);
                 else water.setMirrored(false);
@@ -324,16 +360,15 @@ class Garden extends State {
         }
     }
     
-    // TODO: Check that player has quantity of crop to plant
     void usePlanter(){
-        if(inField() && player.inventory.hasQuantity()){
+        if(inField() && inventory.hasQuantity()){
             int id = getFieldId();
             // only plant a crop if the soil is tilled and no plant exists
             if(crops[id].type == 0 && crops[id].growth == 1){
                 if(player.face == 2)planter.setMirrored(true);
                 else planter.setMirrored(false);
-                crops[id].plant(player.inventory.equippedSeed+1);
-                player.inventory.planted();
+                crops[id].plant(inventory.equippedSeed+1);
+                inventory.planted();
                 swingPlanter = 20;
                 move = false;
             }
@@ -344,7 +379,7 @@ class Garden extends State {
         // Basket for harvesting
         if(inField()){
             // this will remove any growing crop and un-water
-            player.inventory.harvest(crops[getFieldId()].harvest());
+            inventory.harvest(crops[getFieldId()].harvest());
 
             if(player.face == 2)basket.setMirrored(true);
             else basket.setMirrored(false);
@@ -365,8 +400,8 @@ class Garden extends State {
      * Get the Crop ID based on player's position 
      */ 
     int getFieldId(){
-        int x = (player.x - 20)/20;
-        int y = (player.y - 64)/16;
+        int x = (player.x - w)/w;
+        int y = (player.y - 64)/h;
         
         return  x+y*6;
     }
@@ -401,17 +436,17 @@ class Garden extends State {
     void renderScene(){
         // Grass
         //Vertical columns
-        for(int j = 0; j < 11; j++){
+        for(int j = 0; j < 22; j++){
             // Horizontal rows
-            for(int i = 0; i < 11; i++){
-                grass.draw(screen, i*20, j*16);
+            for(int i = 0; i < 22; i++){
+                grass.draw(screen, i*w, j*h);
             }
         }
         
         // Pond
         for(int x = 0; x < 3; x++){
             for(int y = 0; y < 3; y++){
-                pond.draw(screen, x*20, y*16);
+                pond.draw(screen, x*w, y*h);
             }
         }
         
@@ -445,12 +480,12 @@ class Garden extends State {
         byte[] items = new byte[16];
         id = 0;
         for(int j = 0; j < 16; j+=2){
-            items[j] = player.inventory.locks[id] ? 1 : 0;
-            items[j+1] = player.inventory.quantities[id];
+            items[j] = inventory.locks[id] ? 1 : 0;
+            items[j+1] = inventory.quantities[id];
             id++;
         }
         
-        Globals.save(field, items);
+        Globals.save(field, items, inventory.monies, day);
         
         Game.changeState( new Title() );
     }

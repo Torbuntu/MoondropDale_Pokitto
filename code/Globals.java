@@ -1,6 +1,7 @@
 package code;
 
 import femto.mode.HiRes16Color;
+import femto.File;
 import femto.Game;
 import femto.State;
 import femto.input.Button;
@@ -8,8 +9,6 @@ import femto.palette.Psygnosia;
 import femto.font.TIC80;
 
 import code.managers.SaveManager;
-
-import femto.File;
 
 public class Globals {
     static void init(){
@@ -32,7 +31,9 @@ public class Globals {
         return result;
     }
     
-    public static void save(byte[] field, byte[] items){
+    public static void save(byte[] field, byte[] items, int money, int day){
+        saveManager.monies = money;
+        saveManager.day = day;
         saveManager.saveCookie();
         File file = new File();
         if(file.openRW("/data/mddale/field")){

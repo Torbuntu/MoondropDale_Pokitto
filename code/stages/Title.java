@@ -33,13 +33,13 @@ class Title extends State {
         tor = new Tor();
         tor.idleDown();
         
-        // Mixer.init(8000);
-        // playing = Stream.play("music/mdd.raw");
-        // if(playing){
-        //     System.out.println("Playing");
-        // }else{
-        //     System.out.println("Failed to start stream.");
-        // }
+        Mixer.init(8000);
+        playing = Stream.play("music/mdd.raw");
+        if(playing){
+            System.out.println("Playing");
+        }else{
+            System.out.println("Failed to start stream.");
+        }
 
     }
     
@@ -48,7 +48,7 @@ class Title extends State {
     }
     
     void update(){
-        //Stream.update();
+        Stream.update();
         
         screen.clear(2);
         // Change to a new state when A is pressed
@@ -61,7 +61,6 @@ class Title extends State {
         if(Button.Right.justPressed()){
             Globals.character = 0;
         }
-
 
         // Print some text
         screen.setTextPosition( 0, 64 );
