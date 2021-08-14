@@ -1,38 +1,29 @@
 { "frames": [
    {
     "filename": "Planter 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 20, "h": 16 },
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 8 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
-    "sourceSize": { "w": 20, "h": 16 },
-    "duration": 100
-   },
-   {
-    "filename": "Planter 1.aseprite",
-    "frame": { "x": 20, "y": 0, "w": 20, "h": 16 },
-    "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
-    "sourceSize": { "w": 20, "h": 16 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 50
    },
    {
-    "filename": "Planter 2.aseprite",
-    "frame": { "x": 40, "y": 0, "w": 20, "h": 16 },
+    "filename": "Planter 1.aseprite",
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 8 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
-    "sourceSize": { "w": 20, "h": 16 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
-    "filename": "Planter 3.aseprite",
-    "frame": { "x": 60, "y": 0, "w": 20, "h": 16 },
+    "filename": "Planter 2.aseprite",
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 8 },
     "rotated": false,
     "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 16 },
-    "sourceSize": { "w": 20, "h": 16 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 150
    }
  ],
@@ -41,11 +32,10 @@
   "version": "1.2.28-x64",
   "image": "Planter.png",
   "format": "I8",
-  "size": { "w": 80, "h": 16 },
+  "size": { "w": 30, "h": 8 },
   "scale": "1",
   "frameTags": [
-   { "name": "hud", "from": 0, "to": 0, "direction": "forward" },
-   { "name": "swing", "from": 1, "to": 3, "direction": "forward" }
+   { "name": "swing", "from": 0, "to": 2, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }

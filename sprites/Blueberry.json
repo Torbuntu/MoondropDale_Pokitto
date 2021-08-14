@@ -1,47 +1,47 @@
 { "frames": [
    {
     "filename": "Blueberry 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 20, "h": 32 },
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 32 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Blueberry 1.aseprite",
-    "frame": { "x": 20, "y": 0, "w": 20, "h": 32 },
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 32 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Blueberry 2.aseprite",
-    "frame": { "x": 40, "y": 0, "w": 20, "h": 32 },
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 32 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Blueberry 3.aseprite",
-    "frame": { "x": 60, "y": 0, "w": 20, "h": 32 },
+    "frame": { "x": 30, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 32 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Blueberry 4.aseprite",
-    "frame": { "x": 80, "y": 0, "w": 20, "h": 32 },
+    "frame": { "x": 40, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
-    "trimmed": false,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 32 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "trimmed": true,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    }
  ],
@@ -50,7 +50,7 @@
   "version": "1.2.28-x64",
   "image": "Blueberry.png",
   "format": "I8",
-  "size": { "w": 100, "h": 32 },
+  "size": { "w": 50, "h": 7 },
   "scale": "1",
   "frameTags": [
    { "name": "harvest", "from": 0, "to": 0, "direction": "forward" },

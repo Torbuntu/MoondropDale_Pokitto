@@ -1,0 +1,118 @@
+{ "frames": [
+   {
+    "filename": "SeedIcons 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 1.aseprite",
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 2.aseprite",
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 3.aseprite",
+    "frame": { "x": 30, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 4.aseprite",
+    "frame": { "x": 40, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 5.aseprite",
+    "frame": { "x": 50, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 6.aseprite",
+    "frame": { "x": 60, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 7.aseprite",
+    "frame": { "x": 70, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 8.aseprite",
+    "frame": { "x": 80, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   },
+   {
+    "filename": "SeedIcons 9.aseprite",
+    "frame": { "x": 90, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.28-x64",
+  "image": "SeedIcons.png",
+  "format": "I8",
+  "size": { "w": 100, "h": 8 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "turnip", "from": 0, "to": 0, "direction": "forward" },
+   { "name": "radish", "from": 1, "to": 1, "direction": "forward" },
+   { "name": "daisy", "from": 2, "to": 2, "direction": "forward" },
+   { "name": "coffee", "from": 3, "to": 3, "direction": "forward" },
+   { "name": "tea", "from": 4, "to": 4, "direction": "forward" },
+   { "name": "greenBean", "from": 5, "to": 5, "direction": "forward" },
+   { "name": "tomato", "from": 6, "to": 6, "direction": "forward" },
+   { "name": "blueberry", "from": 7, "to": 7, "direction": "forward" },
+   { "name": "magicFruit", "from": 8, "to": 8, "direction": "forward" },
+   { "name": "lock", "from": 9, "to": 9, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

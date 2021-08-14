@@ -1,47 +1,47 @@
 { "frames": [
    {
     "filename": "Tomato 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 20, "h": 31 },
+    "frame": { "x": 0, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Tomato 1.aseprite",
-    "frame": { "x": 20, "y": 0, "w": 20, "h": 31 },
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Tomato 2.aseprite",
-    "frame": { "x": 40, "y": 0, "w": 20, "h": 31 },
+    "frame": { "x": 20, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Tomato 3.aseprite",
-    "frame": { "x": 60, "y": 0, "w": 20, "h": 31 },
+    "frame": { "x": 30, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    },
    {
     "filename": "Tomato 4.aseprite",
-    "frame": { "x": 80, "y": 0, "w": 20, "h": 31 },
+    "frame": { "x": 40, "y": 0, "w": 10, "h": 7 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 20, "h": 31 },
-    "sourceSize": { "w": 20, "h": 32 },
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 7 },
+    "sourceSize": { "w": 10, "h": 8 },
     "duration": 100
    }
  ],
@@ -50,7 +50,7 @@
   "version": "1.2.28-x64",
   "image": "Tomato.png",
   "format": "I8",
-  "size": { "w": 100, "h": 31 },
+  "size": { "w": 50, "h": 7 },
   "scale": "1",
   "frameTags": [
    { "name": "four", "from": 0, "to": 0, "direction": "forward" },

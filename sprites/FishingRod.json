@@ -1,22 +1,32 @@
 { "frames": [
    {
-    "filename": "Grass.aseprite",
+    "filename": "FishingRod 0.aseprite",
     "frame": { "x": 0, "y": 0, "w": 10, "h": 8 },
     "rotated": false,
     "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
     "sourceSize": { "w": 10, "h": 8 },
-    "duration": 100
+    "duration": 250
+   },
+   {
+    "filename": "FishingRod 1.aseprite",
+    "frame": { "x": 10, "y": 0, "w": 10, "h": 8 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 10, "h": 8 },
+    "sourceSize": { "w": 10, "h": 8 },
+    "duration": 300
    }
  ],
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2.28-x64",
-  "image": "Grass.png",
+  "image": "FishingRod.png",
   "format": "I8",
-  "size": { "w": 10, "h": 8 },
+  "size": { "w": 20, "h": 8 },
   "scale": "1",
   "frameTags": [
+   { "name": "swing", "from": 0, "to": 1, "direction": "forward" }
   ],
   "layers": [
    { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }

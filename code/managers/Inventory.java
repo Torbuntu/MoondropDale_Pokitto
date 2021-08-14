@@ -3,28 +3,21 @@ package code.managers;
 import femto.mode.HiRes16Color;
 import code.Globals;
 
-import sprites.Hoe;
-import sprites.Water;
-import sprites.Planter;
-import sprites.Basket;
-
 // For the hud
-import sprites.Turnip;
-import sprites.Radish;
-import sprites.Daisy;
-import sprites.Coffee;
-import sprites.Tea;
-import sprites.GreenBean;
-import sprites.Tomato;
-import sprites.Blueberry;
-import sprites.MagicFruit;
+import sprites.SeedIcons;
+
+import images.HoeIcon;
+import images.WaterIcon;
+import images.PlanterIcon;
+import images.BasketIcon;
+import images.FishingRodIcon;
 
 class Inventory {
-    // 0:hoe, 1:water, 2:planter, 3:other? 
-    int equipped = 0;
+    // 0:Fishing rod, 1:Hoe, 2:water, 3:basket, 4:Planter -> Seed 
+    byte equipped = 1;
     
     // start with 0 (even if we don't have seeds)
-    int equippedSeed = 0;
+    byte equippedSeed = 0;
     
     // Seed quantity
     /*
@@ -41,32 +34,25 @@ class Inventory {
 
     int monies;
     
-    Hoe hoe;
-    Water water;
-    Planter planter;
-    Basket basket;
+    HoeIcon hoeIcon;
+    WaterIcon waterIcon;
+    PlanterIcon planterIcon;
+    BasketIcon basketIcon;
+    FishingRodIcon fishingIcon;
     
     // Start with a full bucket to not irritate users.
-    int fill = 8;
+    byte fill = 8;
     
-    Turnip turnip;
-    Radish radish;
-    Daisy daisy;
-    Coffee coffee;
-    Tea tea;
-    GreenBean greenBean;
-    Tomato tomato;
-    Blueberry blueberry;
-    MagicFruit magicFruit;
+    SeedIcons seedIcons;
     
-    int[] quantities;
+    short[] quantities;
     boolean[] locks;
     
     Inventory(){
-        quantities = new int[9];
+        quantities = new short[9];
         locks = new boolean[9];
         byte[] items = Globals.load("items");
-        int id = 0;
+        byte id = 0;
         for(int i = 0; i < 16; i+=2){
             quantities[id] = items[i+1];
             locks[id] = items[i] == 1;
@@ -75,37 +61,14 @@ class Inventory {
 
         monies = Globals.saveManager.monies;
         
-        turnip = new Turnip();
-        radish = new Radish();
-        daisy = new Daisy();
-        coffee = new Coffee();
-        tea = new Tea();
-        greenBean = new GreenBean();
-        tomato = new Tomato();
-        blueberry = new Blueberry();
-        magicFruit = new MagicFruit();
+        seedIcons = new SeedIcons();
+        seedIcons.turnip();
         
-        turnip.hud();
-        radish.hud();
-        daisy.hud();
-        coffee.hud();
-        tea.hud();
-        greenBean.hud();
-        tomato.hud();
-        blueberry.hud();
-        magicFruit.hud();
-        
-        hoe = new Hoe();
-        hoe.hud();
-        
-        water = new Water();
-        water.hud();
-        
-        planter = new Planter();
-        planter.hud();
-        
-        basket = new Basket();
-        basket.hud();
+        hoeIcon = new HoeIcon();
+        waterIcon = new WaterIcon();
+        planterIcon = new PlanterIcon();
+        basketIcon = new BasketIcon();
+        fishingIcon = new FishingRodIcon();
     }
     
     /**
@@ -137,7 +100,7 @@ class Inventory {
         quantities[equippedSeed]--;
     }
     
-    public boolean buySuccess(int id){
+    public boolean buySuccess(byte id){
         if(monies > 10 && locks[id]){
             monies-=10;
             quantities[id]++;
@@ -147,72 +110,77 @@ class Inventory {
         return true;
     }
     
-    // 0:hoe, 1:water, 2:planter, 3:other? 
-    void drawHud(HiRes16Color screen){
-        switch(equipped){
-            case 0:
-                hoe.draw(screen, 200, 160);
-                break;
-            case 1:
-                water.draw(screen, 180, 160);
-                screen.fillRect(201, 176-(int)(fill*16/8),18,(int)(fill*16/8),14);
-                screen.drawRect(200, 160, 19, 15, 5);
-                break;
-            case 2:
-                planter.draw(screen, 180, 160);
-                switch(equippedSeed){
-                    case 0:turnip.draw(screen, 200, 160);break;
-                    case 1:radish.draw(screen, 200, 160);break;
-                    case 2:daisy.draw(screen, 200, 160);break;
-                    case 3:coffee.draw(screen, 200, 160);break;
-                    case 4:tea.draw(screen, 200, 160);break;
-                    case 5:greenBean.draw(screen, 200, 160);break;
-                    case 6:tomato.draw(screen, 200, 160);break;
-                    case 7:blueberry.draw(screen, 200, 160);break;
-                    case 8:magicFruit.draw(screen, 200, 160);break;
-                }
-                break;
-            case 3:
-                basket.draw(screen, 200, 160);
-                break;
+    // 0:hoe, 1:water, 2:planter, 3:fishing rod 
+    void drawHud(HiRes16Color screen, boolean fish){
+        
+        screen.setTextPosition(0, 158);
+        screen.print("$"+monies);
+                
+        // Unlock the fishing rod?
+        if(fish)fishingIcon.draw(screen, 30, 160);
+        
+        hoeIcon.draw(screen, 50, 160);
+        
+        waterIcon.draw(screen, 70, 160);
+        screen.drawHLine(73, 173,(int)(fill*14/8),14);
+        
+        basketIcon.draw(screen, 90, 160);
+
+        planterIcon.draw(screen, 110, 160);
+        switch(equippedSeed){
+            case 0:seedIcons.turnip();break;
+            case 1:seedIcons.radish();break;
+            case 2:seedIcons.daisy();break;
+            case 3:seedIcons.coffee();break;
+            case 4:seedIcons.tea();break;
+            case 5:seedIcons.greenBean();break;
+            case 6:seedIcons.tomato();break;
+            case 7:seedIcons.blueberry();break;
+            case 8:seedIcons.magicFruit();break;
         }
+        seedIcons.draw(screen, 130, 160);
+
+        // Show selected
+        screen.drawRect(29+equipped*20, 159, 20,16, 14);
     }
     
     public void drawTool(HiRes16Color screen){
         switch(equipped){
             case 0:
-                hoe.hud();
-                hoe.draw(screen, 146 , 50);
+                fishingIcon.draw(screen, 146, 50);
                 break;
             case 1:
-                water.hud();
-                water.draw(screen, 146 , 50);
+                hoeIcon.draw(screen, 146 , 50);
                 break;
             case 2:
-                planter.hud();
-                planter.draw(screen, 146 , 50);
+                waterIcon.draw(screen, 146 , 50);
                 break;
             case 3:
-                basket.hud();
-                basket.draw(screen, 146 , 50);
+                basketIcon.draw(screen, 146 , 50);
+                break;
+            case 4:
+                planterIcon.draw(screen, 146 , 50);
                 break;
         }
     }
     
-    public void drawSeed(HiRes16Color screen, int id){
-        screen.setTextPosition(140, 90);
-        screen.print("x"+quantities[id]);
+    public void drawSeed(HiRes16Color screen, byte id){
+        screen.setTextPosition(150, 80);
+        screen.print("x"+(int)quantities[id]);
+        
+        screen.setTextPosition(45, 72);
         switch(id){
-            case 0:if(locks[0])turnip.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 1:if(locks[1])radish.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 2:if(locks[2])daisy.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 3:if(locks[3])coffee.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 4:if(locks[4])tea.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 5:if(locks[5])greenBean.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 6:if(locks[6])tomato.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 7:if(locks[7])blueberry.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
-            case 8:if(locks[8])magicFruit.draw(screen, 146, 72);else screen.fillRect(145, 72, 20, 16, 12);break;
+            case 0:seedIcons.turnip();screen.print("Turnip");break;
+            case 1:if(locks[1]){seedIcons.radish();screen.print("Radish");}else{ seedIcons.lock();screen.print("Radish");}break;
+            case 2:if(locks[2]){seedIcons.daisy();screen.print("Daisy");}else{ seedIcons.lock();screen.print("Daisy");}break;
+            case 3:if(locks[3]){seedIcons.coffee();screen.print("Coffee");}else{ seedIcons.lock();screen.print("Coffee");}break;
+            case 4:if(locks[4]){seedIcons.tea();screen.print("Tea");}else{ seedIcons.lock();screen.print("Tea");}break;
+            case 5:if(locks[5]){seedIcons.greenBean();screen.print("Green Beans");}else{ seedIcons.lock();screen.print("Green Beans");}break;
+            case 6:if(locks[6]){seedIcons.tomato();screen.print("Tomato");}else{ seedIcons.lock();screen.print("Tomato");}break;
+            case 7:if(locks[7]){seedIcons.blueberry();screen.print("Blueberry");}else{ seedIcons.lock();screen.print("Blueberry");}break;
+            case 8:if(locks[8]){seedIcons.magicFruit();screen.print("Magic Fruit");}else{ seedIcons.lock();screen.print("Magic Fruit");}break;
         }
+        seedIcons.draw(screen, 145, 64);
     }
     
     public void drawSeed(HiRes16Color screen){

@@ -1,29 +1,29 @@
 { "frames": [
    {
     "filename": "Lol 0.aseprite",
-    "frame": { "x": 0, "y": 0, "w": 14, "h": 22 },
+    "frame": { "x": 0, "y": 0, "w": 7, "h": 11 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 3, "y": 0, "w": 14, "h": 22 },
-    "sourceSize": { "w": 20, "h": 24 },
+    "spriteSourceSize": { "x": 1, "y": 0, "w": 7, "h": 11 },
+    "sourceSize": { "w": 10, "h": 12 },
     "duration": 100
    },
    {
     "filename": "Lol 1.aseprite",
-    "frame": { "x": 14, "y": 0, "w": 14, "h": 22 },
+    "frame": { "x": 7, "y": 0, "w": 7, "h": 11 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 3, "y": 0, "w": 14, "h": 22 },
-    "sourceSize": { "w": 20, "h": 24 },
+    "spriteSourceSize": { "x": 1, "y": 0, "w": 7, "h": 11 },
+    "sourceSize": { "w": 10, "h": 12 },
     "duration": 100
    },
    {
     "filename": "Lol 2.aseprite",
-    "frame": { "x": 28, "y": 0, "w": 14, "h": 22 },
+    "frame": { "x": 14, "y": 0, "w": 7, "h": 11 },
     "rotated": false,
     "trimmed": true,
-    "spriteSourceSize": { "x": 3, "y": 0, "w": 14, "h": 22 },
-    "sourceSize": { "w": 20, "h": 24 },
+    "spriteSourceSize": { "x": 1, "y": 0, "w": 7, "h": 11 },
+    "sourceSize": { "w": 10, "h": 12 },
     "duration": 100
    }
  ],
@@ -32,7 +32,7 @@
   "version": "1.2.28-x64",
   "image": "Lol.png",
   "format": "I8",
-  "size": { "w": 42, "h": 22 },
+  "size": { "w": 21, "h": 11 },
   "scale": "1",
   "frameTags": [
    { "name": "idleHori", "from": 0, "to": 0, "direction": "forward" },

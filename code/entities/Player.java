@@ -8,17 +8,17 @@ import sprites.Lol;
 
 class Player {
     // face: 0:left, 1:up, 2:right, 3:down
-    int character, face;
-    int x, y, flash;
+    byte character, face;
+    short x, y;
     Tor tor;
     Lol lol;
     boolean cursor = true;
     
-    final private int w = 10, h = 8;
+    final private short w = 10, h = 8;
     
-    Player(int character){
-        x = 20;
-        y = 64;
+    Player(byte character){
+        x = 50;
+        y = 56;
         
         face = 0;
         this.character = character;
@@ -32,6 +32,7 @@ class Player {
     }
     
     void moveLeft(){
+        if(x <= 30)return;
         character == 1 ? tor.idleHori() : lol.idleHori();
         character == 1 ? tor.setMirrored(false) : lol.setMirrored(false);
         switch(face){
@@ -51,6 +52,7 @@ class Player {
         face = 0;
     }
     void moveRight(){
+        if(x >= 210)return;
         character == 1 ? tor.idleHori() : lol.idleHori();
         character == 1 ? tor.setMirrored(true) : lol.setMirrored(true);
         switch(face){
@@ -71,6 +73,7 @@ class Player {
 
     }
     void moveUp(){
+        if(y <= 0)return;
         character == 1 ? tor.idleUp() : lol.idleUp();
         switch(face){
             case 0:
@@ -89,6 +92,7 @@ class Player {
         face = 1;
     }
     void moveDown(){
+        if(y >= 152)return;
         character == 1 ? tor.idleDown() : lol.idleDown();
         switch(face){
             case 0:
@@ -128,9 +132,7 @@ class Player {
     
     // To render the curosr always on top
     void renderCursor(HiRes16Color screen){
-        if(x >= 10 && x < 180 && y >= 40 && y < 160){
-            screen.drawRect(x, y, w, h, 14);
-        }
+        screen.drawRect(x, y, w, h, 14);
     }
     
     /**

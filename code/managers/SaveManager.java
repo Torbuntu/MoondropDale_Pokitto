@@ -5,8 +5,7 @@ class SaveManager extends femto.Cookie {
         super();
         begin("MDDALE");
     }
-    int day;
-    int character;
+    short day;
+    byte character;
     int monies;
-    
 }
