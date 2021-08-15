@@ -50,7 +50,8 @@ class Title extends State {
     void update(){
         Stream.update();
         
-        screen.clear(2);
+        screen.clear(10);
+        screen.setTextColor(2);
         // Change to a new state when A is pressed
         if( Button.A.justPressed() )
             Game.changeState( new Garden() );

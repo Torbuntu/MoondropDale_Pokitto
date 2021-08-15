@@ -285,7 +285,8 @@
 		"code/managers/Inventory.java": {},
 		"code/managers/SaveManager.java": {},
 		"code/stages/Garden.java": {},
-		"code/stages/Title.java": {}
+		"code/stages/Title.java": {},
+		"data.zip": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {
