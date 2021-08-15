@@ -1,0 +1,55 @@
+{ "frames": [
+   {
+    "filename": "TitleBanner 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 220, "h": 80 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 220, "h": 80 },
+    "sourceSize": { "w": 220, "h": 80 },
+    "duration": 300
+   },
+   {
+    "filename": "TitleBanner 1.aseprite",
+    "frame": { "x": 220, "y": 0, "w": 220, "h": 80 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 220, "h": 80 },
+    "sourceSize": { "w": 220, "h": 80 },
+    "duration": 300
+   },
+   {
+    "filename": "TitleBanner 2.aseprite",
+    "frame": { "x": 440, "y": 0, "w": 220, "h": 80 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 220, "h": 80 },
+    "sourceSize": { "w": 220, "h": 80 },
+    "duration": 300
+   },
+   {
+    "filename": "TitleBanner 3.aseprite",
+    "frame": { "x": 660, "y": 0, "w": 220, "h": 80 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 220, "h": 80 },
+    "sourceSize": { "w": 220, "h": 80 },
+    "duration": 300
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.28-x64",
+  "image": "TitleBanner.png",
+  "format": "I8",
+  "size": { "w": 880, "h": 80 },
+  "scale": "1",
+  "frameTags": [
+   { "name": "idle", "from": 0, "to": 3, "direction": "forward" }
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

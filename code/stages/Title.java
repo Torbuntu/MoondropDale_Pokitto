@@ -14,13 +14,13 @@ import code.stages.Garden;
 
 import sprites.Tor;
 import sprites.Lol;
+import sprites.TitleBanner;
 
 class Title extends State {
     Tor tor;
     Lol lol;
+    TitleBanner title;
     HiRes16Color screen;
-    
-    int[][] field;
     
     boolean playing = false;
     
@@ -33,18 +33,18 @@ class Title extends State {
         tor = new Tor();
         tor.idleDown();
         
+        title = new TitleBanner();
+        title.idle();
+        
         Mixer.init(8000);
-        playing = Stream.play("music/mdd.raw");
-        if(playing){
-            System.out.println("Playing");
-        }else{
-            System.out.println("Failed to start stream.");
-        }
-
+        playing = Stream.play("music/mddal.raw");
     }
     
     void shutdown(){
         screen = null;
+        title = null;
+        tor = null;
+        lol = null;
     }
     
     void update(){
@@ -61,9 +61,11 @@ class Title extends State {
         if(Button.Right.justPressed()){
             Globals.character = 0;
         }
+        
+        title.draw(screen,0,0);
 
         // Print some text
-        screen.setTextPosition( 0, 64 );
+        screen.setTextPosition( 0, 84 );
         screen.println("Welcome to Moondrop Dale!");
         screen.println("Select a player: ");
         

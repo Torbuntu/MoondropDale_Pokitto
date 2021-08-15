@@ -8,4 +8,5 @@ class SaveManager extends femto.Cookie {
     short day;
     byte character;
     int monies;
+    boolean fishing;
 }

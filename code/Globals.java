@@ -19,7 +19,7 @@ public class Globals {
     public static final HiRes16Color screen = new HiRes16Color(MoonDropDale.palette(), TIC80.font());
 
     // 1 = Tor, 2 = Lol 
-    public static int character; 
+    public static byte character; 
     
     public static byte[] load(String path){
         File file = new File();

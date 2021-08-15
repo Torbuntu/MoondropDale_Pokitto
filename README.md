@@ -3,6 +3,8 @@
 # Building
 This project is built using [FemtoIDE](https://github.com/felipemanga/femtoIDE) for the [Pokitto](https://talk.pokitto.com/)
 
+## Title music: https://opengameart.org/content/a-new-town-rpg-theme
+
 ## Crop types and growth data
 
 type-growth

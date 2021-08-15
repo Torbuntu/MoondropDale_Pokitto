@@ -45,7 +45,7 @@ class Inventory {
     
     SeedIcons seedIcons;
     
-    short[] quantities;
+    short[] quantities, cost;
     boolean[] locks;
     
     Inventory(){
@@ -58,6 +58,17 @@ class Inventory {
             locks[id] = items[i] == 1;
             id++;
         }
+        cost = new short[]{
+            1,
+            3,
+            5,
+            8,
+            13,
+            21,
+            34,
+            55,
+            150
+        };
 
         monies = Globals.saveManager.monies;
         
@@ -77,18 +88,18 @@ class Inventory {
      * 
      * TODO: update the prices to be accurate
      */ 
-    void harvest(int id){
+    void harvest(byte id){
         switch(id){
             case 0: break;
-            case 1: monies += 10;break;
-            case 2: monies += 10;break;
-            case 3: monies += 10;break;
-            case 4: monies += 10;break;
-            case 5: monies += 10;break;
-            case 6: monies += 10;break;
-            case 7: monies += 10;break;
-            case 8: monies += 10;break;
-            case 9: monies += 10;break;
+            case 1: monies += 5;break;
+            case 2: monies += 15;break;
+            case 3: monies += 40;break;
+            case 4: monies += 65;break;
+            case 5: monies += 80;break;
+            case 6: monies += 105;break;
+            case 7: monies += 150;break;
+            case 8: monies += 175;break;
+            case 9: monies += 500;break;
         }
     }
     
@@ -101,8 +112,8 @@ class Inventory {
     }
     
     public boolean buySuccess(byte id){
-        if(monies > 10 && locks[id]){
-            monies-=10;
+        if(monies >= cost[id] && locks[id]){
+            monies -= cost[id];
             quantities[id]++;
         }else{
             return false;
@@ -112,21 +123,21 @@ class Inventory {
     
     // 0:hoe, 1:water, 2:planter, 3:fishing rod 
     void drawHud(HiRes16Color screen, boolean fish){
-        
-        screen.setTextPosition(0, 158);
+        screen.setTextColor(1);
+        screen.setTextPosition(120, 158);
         screen.print("$"+monies);
                 
         // Unlock the fishing rod?
-        if(fish)fishingIcon.draw(screen, 30, 160);
+        if(fish)fishingIcon.draw(screen, 4, 155);
         
-        hoeIcon.draw(screen, 50, 160);
+        hoeIcon.draw(screen, 24, 155);
         
-        waterIcon.draw(screen, 70, 160);
-        screen.drawHLine(73, 173,(int)(fill*14/8),14);
+        waterIcon.draw(screen, 44, 155);
+        screen.drawHLine(47, 173,(int)(fill*14/8),14);
         
-        basketIcon.draw(screen, 90, 160);
+        basketIcon.draw(screen, 64, 155);
 
-        planterIcon.draw(screen, 110, 160);
+        planterIcon.draw(screen, 84, 155);
         switch(equippedSeed){
             case 0:seedIcons.turnip();break;
             case 1:seedIcons.radish();break;
@@ -138,10 +149,10 @@ class Inventory {
             case 7:seedIcons.blueberry();break;
             case 8:seedIcons.magicFruit();break;
         }
-        seedIcons.draw(screen, 130, 160);
+        seedIcons.draw(screen, 104, 155);
 
         // Show selected
-        screen.drawRect(29+equipped*20, 159, 20,16, 14);
+        screen.drawRect(3+equipped*20, 154, 21,17, 14);
     }
     
     public void drawTool(HiRes16Color screen){
@@ -165,10 +176,10 @@ class Inventory {
     }
     
     public void drawSeed(HiRes16Color screen, byte id){
-        screen.setTextPosition(150, 80);
+        screen.setTextPosition(110, 90);
         screen.print("x"+(int)quantities[id]);
         
-        screen.setTextPosition(45, 72);
+        screen.setTextPosition(110, 80);
         switch(id){
             case 0:seedIcons.turnip();screen.print("Turnip");break;
             case 1:if(locks[1]){seedIcons.radish();screen.print("Radish");}else{ seedIcons.lock();screen.print("Radish");}break;

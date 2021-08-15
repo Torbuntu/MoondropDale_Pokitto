@@ -7,14 +7,13 @@ import femto.input.Button;
 import femto.palette.Psygnosia;
 import femto.font.TIC80;
 
-import images.Grass;
-
 import code.Globals;
 import code.Main;
 
 import code.entities.Player;
 
 import code.managers.Inventory;
+import code.managers.CropManager;
 
 import code.stages.Title;
 
@@ -23,18 +22,28 @@ import sprites.Planter;
 import sprites.Water;
 import sprites.Basket;
 import sprites.FishingRod;
-
 import sprites.Pond;
+import sprites.Wave;
 
+import images.Arm;
+import images.Corner;
 import images.ActionIcon;
+import images.GrassV;
+import images.GrassH;
+import images.Stone;
+import images.Door;
 
 class Garden extends State {
     
     HiRes16Color screen;
     
+    CropManager cropManager;
     Player player;
     Inventory inventory;
-    Grass grass;
+    GrassV grassV;
+    GrassH grassH;
+    Stone stone;
+    Door door;
     ActionIcon actionIcon;
 
     Hoe hoe;
@@ -49,13 +58,15 @@ class Garden extends State {
     Basket basket;
     byte swingBasket = 0;
     
-    
     FishingRod rod;
     byte swingRod = 0;
     
     Pond pond;
+    Wave wave;
+    Arm arm = new Arm();
+    Corner corner = new Corner();
     
-    byte hour, cursor;
+    byte hour, cursor, menuOffset;
     short day, dayProgress;
     
     // Used in the checkTool `switch` to avoid lots of `if` checks
@@ -64,12 +75,12 @@ class Garden extends State {
     // 0: regular, 1: pause/menu, 2: summary, 3: fishing
     byte gameState = 0;
     
-    boolean pause = false, move = true, shop = false, summary = false;
-    // boolean raining = false;
+    boolean exit, move = true, shop = false, summary = false;
+    boolean raining = false;
     boolean fishingAvailable, catchSuccess = false;
     byte caughtSize, catchTime, fishTime;
     
-    final private int w = 10, h = 8;
+    final private short w = 10, h = 8;
 
     // Field plots arrays. 
     byte[] type;
@@ -79,11 +90,11 @@ class Garden extends State {
     void init(){
         screen = Globals.screen;
         day = Globals.saveManager.day;
-        fishingAvailable = day > 10;
+        fishingAvailable = Globals.saveManager.fishing;
         byte playerId = Globals.character == 0 ? 2 : Globals.character;
         player = new Player(playerId);
         inventory = new Inventory();
-       
+        cropManager = new CropManager();
 
         dayProgress = 0;
         hour=0;
@@ -104,10 +115,15 @@ class Garden extends State {
             id++;
         }
         
-        grass = new Grass();
+        grassV = new GrassV();
+        grassH = new GrassH();
+        stone = new Stone();
+        door = new Door();//huehue
         actionIcon = new ActionIcon();
         pond = new Pond();
         pond.wave();
+        wave = new Wave();
+        wave.wave();
         
         hoe = new Hoe();
         planter = new Planter();
@@ -125,24 +141,35 @@ class Garden extends State {
         player.dispose();
         player = null;
         inventory = null;
-        grass = null;
-        
+        grassH = null;
+        grassV = null;
         pond = null;
         hoe = null;
         planter = null;
         water = null;
         basket = null;
-        //rod = null;
+        rod = null;
     }
     
     void update(){
-        render();
+        
         // 0: regular, 1: pause/menu, 2: summary, 3: fishing
         switch(gameState){
-            case 0:updatePrimaryDay();break;
-            case 1:updateHandheldMenu();break;
-            case 2:updateFishing();break;
+            case 0:render();updatePrimaryDay();break;
+            case 1:render();updateHandheldMenu();break;
+            case 2:render();updateFishing();break;
             case 3:updateSummary();break;
+        }
+        
+        if(gameState != 3){
+            // UI box
+            screen.fillRect(0, 152, 220, 24, 5);
+            // Render the HUD (equipped item, seed amount, Monies);
+            inventory.drawHud(screen, fishingAvailable);
+            
+            // Render day progression.
+            // TODO: Make this a fancy gui with a "sun" -> "moon" etc...
+            screen.drawHLine(0, 175, dayProgress, 12);
         }
 
         screen.flush();
@@ -158,15 +185,22 @@ class Garden extends State {
         
         if(dayProgress > 200){
             dayProgress = 0;
-            for(int i = 0; i < 120; i++){
-                if(type[i] > 0 && growth[i] > 1 && watered[i] == 1){
-                    watered[i] = 0;
-                    
-                    growth[i] = growth[i] < 9 ? growth[i]++ : 9;
-                    System.out.println("GROW!"+ (int)growth[i]);
+            raining = (Math.random(0,3)==1);
+
+            for(byte i = 0; i < 120; i++){
+                if(growth[i] > 0){
+                    if(type[i] > 0 && watered[i]==1){
+                        if(growth[i] < 9)growth[i]++;
+                        //growth[i] = growth[i] < 9 ? growth[i]++ : 9;
+                        System.out.println("GROW!"+ (int)growth[i]);
+                    }
+                    // set water based on raining
+                    watered[i] = raining ? 1:0;
                 }
             }
+
             gameState = 3;
+            return;
         }
         
         // Shift equipped item
@@ -183,6 +217,8 @@ class Garden extends State {
         
         if( Button.C.justPressed() ){
             gameState = 1;
+            menuOffset = 120;
+            exit = false;
         }
         
         // handle movement
@@ -190,21 +226,11 @@ class Garden extends State {
             if( Button.A.justPressed() ){
                 // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
                 switch(inventory.equipped){
-                    case 0:
-                        useFishingRod();
-                        break;
-                    case 1:
-                        useHoe();
-                        break;
-                    case 2:
-                        useWater();
-                        break;
-                    case 3:
-                        useBasket();
-                        break;
-                    case 4:
-                        usePlanter();
-                        break;
+                    case 0:useFishingRod();break;
+                    case 1:useHoe();break;
+                    case 2:useWater();break;
+                    case 3:useBasket();break;
+                    case 4:usePlanter();break;
                 }
             }
             if(Button.Left.justPressed()){
@@ -223,11 +249,11 @@ class Garden extends State {
         
     }
     
-    
     void render(){
         // -- Render --
-        //if(raining)screen.clear(10);else screen.clear(11);
-        screen.clear(10);
+        if(raining)screen.clear(11);
+        else screen.clear(10);
+        //screen.clear(10);
         
         renderScene();
         
@@ -244,7 +270,7 @@ class Garden extends State {
                 screen.fillRect(50+x*10, 64+y*8, 10, 8, 6);
                 continue;
             }
-            if(type[id] > 0)renderCrop(id, x, y);
+            if(type[id] > 0)renderCrop(id, 50+x*10, 64+y*8);
         }
         
         // Render player in between plants that are over or under.
@@ -258,22 +284,22 @@ class Garden extends State {
             player.renderCursor(screen);
         }
 
-        
-        // Render the HUD (equipped item, seed amount, Monies);
-        inventory.drawHud(screen, fishingAvailable);
-        
-        // Render day progression
-        screen.drawHLine(0, 175, dayProgress, 12);
     }
     
     void updateSummary(){
+        screen.clear(1);
         if(Button.A.justPressed() || Button.B.justPressed() || Button.C.justPressed()){
             gameState = 0;
             day++;
-            if(day > 10)fishingAvailable = true;
+            player.x = 160;
+            player.y = 32;
         }
         
-        dialog("The day is over. Time to rest.");
+        dialog("The day is over. You rest.");
+        if(raining){
+            dialogLine("It rains during the night.");
+        }
+        
     }
     
     /**
@@ -288,18 +314,8 @@ class Garden extends State {
      * 9 - magicFruit
      * 
      */ 
-    void renderCrop(byte id, byte x, byte y){
-        switch(type[id]){
-            case 1: break;
-            case 2: break;
-            case 3: break;
-            case 4: break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
-            case 9: break;
-        }
+    void renderCrop(byte id, short x, short y){
+        cropManager.draw(screen, type[id], growth[id], x, y);
     }
     
     void seedShop(){
@@ -311,13 +327,14 @@ class Garden extends State {
         screen.print("$" + inventory.monies);
         
         // TODO: get seed cost for math
-        /*
-            screen.setTextPosition(45, 72);
-            screen.print("-"+inventory.seed.cost or something);
         
-        */
-        // List available seeds.
         screen.setTextPosition(45, 64);
+        if(cursor == 10)screen.print("- $100");
+        else screen.print("- $"+(int)inventory.cost[cursor]);
+        
+        
+        // List available seeds.
+        screen.setTextPosition(45, 80);
         if(cursor < 9){
             screen.print("> Seed:");
             inventory.drawSeed(screen, cursor);
@@ -326,10 +343,10 @@ class Garden extends State {
         }
         
         if(!fishingAvailable){
-            screen.setTextPosition(45, 90);
+            screen.setTextPosition(45, 100);
             if(cursor == 10) screen.print("> ");
             screen.print("Fishing Rod: ");
-            inventory.fishingIcon.draw(screen, 145, 90);
+            inventory.fishingIcon.draw(screen, 145, 100);
         }
         
         screen.setTextPosition(45, 126);
@@ -339,16 +356,14 @@ class Garden extends State {
             cursor = 10;
         }
         if(Button.Up.justPressed()){
-            cursor = 8;
+            cursor = 0;
         }
         
         if(Button.Right.justPressed()){
             if(cursor < 8)cursor++;
-            else cursor = 0;
         }
         if(Button.Left.justPressed()){
             if(cursor > 0)cursor--;
-            else cursor = 8;
         }
         
         if(Button.A.justPressed()){
@@ -376,13 +391,43 @@ class Garden extends State {
     }
     
     void updateHandheldMenu(){
+        
         // TODO: Replace manual drawing with nice device images.
-        screen.fillRect(30, 30, 160, 116, 9);
+        screen.drawHLine(40,20+menuOffset,140,1);
+        screen.fillRect(40, 21+menuOffset, 140, 20, 9);
+        corner.draw(screen, 20, 20+menuOffset, false, false, true);
+        corner.draw(screen, 180, 20+menuOffset, true, false, true);
         
-        screen.fillRect(15, 60, 190, 20, 9);
+        // Left border
+        screen.drawVLine(20, 40+menuOffset, 112, 1);
+        screen.fillRect(21, 40+menuOffset, 19, 112, 9);
         
-        screen.fillRect(40, 40, 140, 96, 5);
-        screen.fillRect(42, 42, 136, 92, 1);
+        // Right border
+        screen.drawVLine(199, 40+menuOffset, 112, 1);
+        screen.fillRect(180, 40+menuOffset, 19, 112, 9);
+        
+        // arms
+        arm.draw(screen, 1, 90+menuOffset, false, false, true);
+        arm.draw(screen, 199, 90+menuOffset, true, false, true);
+        
+        // Render handheld screen
+        screen.fillRect(40, 40+menuOffset, 140, 96, 5);
+        screen.fillRect(42, 42+menuOffset, 136, 92, 1);
+        
+        // Bottom border
+        screen.fillRect(40, 136+menuOffset, 140, 16, 9, true);
+        
+        if(!exit && menuOffset > 0){
+            menuOffset -= 10;
+            return;
+        }
+        
+        if(exit && menuOffset < 120){
+            menuOffset+=10;
+            if(menuOffset == 120)gameState=0;
+            return;
+        }
+        
         if(shop){
             seedShop();
             return;
@@ -393,13 +438,13 @@ class Garden extends State {
         screen.print("-- Menu --");
         
         // Seed Select (cursor == 1)
-        screen.setTextPosition(45, 64);
+        screen.setTextPosition(45, 80);
         if(cursor == 0)screen.print("> ");
-        screen.print("Seed to Plant: ");
+        screen.print("Seed:");
         inventory.drawSeed(screen);
         
         // Seed Shop (cursor == 2)
-        screen.setTextPosition(45, 100);
+        screen.setTextPosition(45, 116);
         if(cursor == 1)screen.print("> ");
         screen.print("Enter Shop");
         
@@ -411,19 +456,26 @@ class Garden extends State {
         if(Button.Up.justPressed())cursor--;
         if(Button.Down.justPressed())cursor++;
         if(cursor < 0)cursor = 0;
-        if(cursor > 4)cursor = 4;
+        if(cursor > 2)cursor = 2;
         
         
         if(Button.Left.justPressed()){
             if(cursor == 0){
-                inventory.equippedSeed--;
-                if(inventory.equippedSeed < 0)inventory.equippedSeed = 8;
+                if(inventory.equippedSeed > 0){
+                    if(inventory.locks[inventory.equippedSeed-1]){
+                        inventory.equippedSeed--;
+                    }
+                }
             }
         }
         if(Button.Right.justPressed()){
             if(cursor == 0){
-                inventory.equippedSeed++;
-                if(inventory.equippedSeed > 8)inventory.equippedSeed = 0;
+                
+                if(inventory.equippedSeed < 8){
+                    if(inventory.locks[inventory.equippedSeed+1]){
+                        inventory.equippedSeed++;
+                    }
+                }
             }
         }
         
@@ -438,7 +490,7 @@ class Garden extends State {
         }
         
         if(Button.B.justPressed() || Button.C.justPressed()){
-            gameState = 0;
+            exit = true;
         }
         
     }
@@ -446,21 +498,24 @@ class Garden extends State {
     /**
      * Set the time before fish is ON!
      * Switch to fishing game state.
-     * set the tool to `1` (hoe) to exit the fishing event when done.
+     * 
      */ 
     void useFishingRod(){
-        //swing fishing rod
-        fishTime = Math.random(30, 90);
-        gameState = 2;
-        tool = 1;
+        if(player.x < 30 && player.face == 0){
+            //swing fishing rod
+            fishTime = Math.random(30, 90);
+            gameState = 2;
+            tool = 0;
+        }
     }
     
     void useHoe(){
         if(inField()){
             // this will remove any growing crop and un-water
             //crops[getFieldId()].till();
-            if(type[getFieldId()] == 0 && growth[getFieldId()] == 0){
-                growth[getFieldId()] = 1;
+            short id = getFieldId();
+            if(type[id] == 0 && growth[id] == 0){
+                growth[id] = 1;
             }
             swingHoe = 20;
             move = false;
@@ -472,7 +527,7 @@ class Garden extends State {
     
     void useWater(){
         // If at the pond, fill the water
-        if(player.x < 50)inventory.fill = 8;
+        if(player.x < 40)inventory.fill = 8;
         
         else if(inField() && inventory.fill > 0){
             short id = getFieldId();
@@ -493,7 +548,19 @@ class Garden extends State {
         if(inField()){
             short id = getFieldId();
             if(type[id] == 0)return;
-            if(growth[id] < 7)return;
+            // TODO: Check for type and growth to determine if ready for harvest
+            switch(type[id]){
+                case 0: return;break;//Nothing to do here.
+                case 1: if(growth[id] < 5)return;break;
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                case 7:
+                case 8: if(growth[id] < 7)return;
+            }
+            
             watered[id] = 0;
             growth[id] = 0;
             inventory.harvest(type[id]);
@@ -539,12 +606,14 @@ class Garden extends State {
         short x = (player.x - 50)/w;
         short y = (player.y - 64)/h;
         // 12 is the width of the field
-        return  x+y*12;
+        short id = x+y*12;
+        System.out.println(id);
+        return id;
     }
     
     void checkToolUse(){
         switch(tool){
-            case 0: 
+            case 0:
                 break;
             case 1:
                 if(swingHoe > 0){
@@ -582,36 +651,45 @@ class Garden extends State {
     }
     
     void renderScene(){
-        // Grass
-        // Vertical columns
-        for(int j = 0; j < 22; j++){
-            // Horizontal rows
-            for(int i = 0; i < 22; i++){
-                grass.draw(screen, i*w, j*h);
-            }
-        }
-        
+
         // Pond
-        for(int x = 0; x < 4; x++){
+        for(int x = 0; x < 3; x++){
             for(int y = 0; y < 19; y++){
                 pond.draw(screen, x*w, y*h);
             }
         }
+        for(int i = 0; i < 19; i++){
+            wave.draw(screen, 28, i*h);
+        }
         //System.out.println(screen.fps());
         
         // house
-        screen.fillRect(140, 0, 80, 32, 4);
+        // TODO: Make an actual house graphic
+        //screen.fillRect(140, 0, 80, 32, 4);
+        for(int i = 0; i < 8; i++){
+            stone.draw(screen, 140+i*10, 8);
+            stone.draw(screen, 140+i*10, 16);
+        }
+        door.draw(screen, 160, 8);
+        
+        // Roof
+        // TODO: Make real roof graphics
+        screen.drawRect(129, 0, 92, 8, 1);
         screen.fillRect(130, 0, 90, 8, 12);
         
         // field zone
         // TODO: replace this with untilled soil sprite
-        screen.fillRect(49, 63, 121, 81, 3);
+        screen.fillRect(50, 64, 120, 80, 3);
         
-        
-        // UI box
-        screen.fillRect(0, 152, 220, 24, 5);
+        for(int i = 0; i < 12; i++){
+            grassH.draw(screen, 50+i*10, 60);
+            grassH.draw(screen, 50+i*10, 142, true, true, false);
+        }
+        for(int i = 0; i < 10; i++){
+            grassV.draw(screen, 46, 64+i*8);
+            grassV.draw(screen, 168, 64+i*8, true, false, false);
+        }
     }
-    
     
     /**
      * Before updateFishing is entered, a random int for fishTime is set.
@@ -700,7 +778,7 @@ class Garden extends State {
             items[j+1] = inventory.quantities[id];
             id++;
         }
-        
+        Globals.saveManager.fishing = fishingAvailable;
         Globals.save(field, items, inventory.monies, day);
         
         Game.changeState( new Title() );
