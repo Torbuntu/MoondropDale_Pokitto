@@ -97,6 +97,7 @@ class Inventory {
         
         fill = 8;
         equippedSeed = 0;
+        equippedTool = 1;
     }
     
     /**
