@@ -14,10 +14,10 @@ import images.FishingRodIcon;
 
 class Inventory {
     // 0:Fishing rod, 1:Hoe, 2:water, 3:basket, 4:Planter -> Seed 
-    byte equipped = 1;
+    byte equippedTool;
     
     // start with 0 (even if we don't have seeds)
-    byte equippedSeed = 0;
+    byte equippedSeed;
     
     // Seed quantity
     /*
@@ -41,21 +41,24 @@ class Inventory {
     FishingRodIcon fishingIcon;
     
     // Start with a full bucket to not irritate users.
-    byte fill = 8;
+    byte fill;
     
     SeedIcons seedIcons;
     
     short[] quantities, cost;
-    boolean[] locks;
+    boolean[] unlocked;
+    int[] unlockPrice;
     
     Inventory(){
+
         quantities = new short[9];
-        locks = new boolean[9];
+        unlocked = new boolean[9];
+        
         byte[] items = Globals.load("items");
         byte id = 0;
         for(int i = 0; i < 16; i+=2){
             quantities[id] = items[i+1];
-            locks[id] = items[i] == 1;
+            unlocked[id] = items[i] == 1;
             id++;
         }
         cost = new short[]{
@@ -69,6 +72,17 @@ class Inventory {
             55,
             150
         };
+        unlockPrice = new int[]{
+            0,
+            50,
+            150,
+            350,
+            650,
+            950,
+            1050,
+            5000,
+            100000
+        };
 
         monies = Globals.saveManager.monies;
         
@@ -80,13 +94,15 @@ class Inventory {
         planterIcon = new PlanterIcon();
         basketIcon = new BasketIcon();
         fishingIcon = new FishingRodIcon();
+        
+        fill = 8;
+        equippedSeed = 0;
     }
     
     /**
      * Manages increase in Monies when a crop
      * is harvested.    
      * 
-     * TODO: update the prices to be accurate
      */ 
     void harvest(byte id){
         switch(id){
@@ -103,6 +119,11 @@ class Inventory {
         }
     }
     
+    public int getCost(byte id){
+        if(unlocked[id]) return cost[id];
+        else return unlockPrice[id];
+    }
+    
     public boolean hasQuantity(){
         return quantities[equippedSeed] > 0;
     }
@@ -112,13 +133,23 @@ class Inventory {
     }
     
     public boolean buySuccess(byte id){
-        if(monies >= cost[id] && locks[id]){
-            monies -= cost[id];
-            quantities[id]++;
+        if(unlocked[id]){
+            if(monies >= cost[id]){
+                monies -= cost[id];
+                quantities[id]++;
+                return true;
+            }else{
+                return false;
+            }
         }else{
-            return false;
+            if(monies >= unlockPrice[id]){
+                monies -= unlockPrice[id];
+                unlocked[id] = true;
+                return true;
+            }else{
+                return false;
+            }
         }
-        return true;
     }
     
     // 0:hoe, 1:water, 2:planter, 3:fishing rod 
@@ -152,11 +183,11 @@ class Inventory {
         seedIcons.draw(screen, 104, 155);
 
         // Show selected
-        screen.drawRect(3+equipped*20, 154, 21,17, 14);
+        screen.drawRect(3+equippedTool*20, 154, 21,17, 14);
     }
     
     public void drawTool(HiRes16Color screen){
-        switch(equipped){
+        switch(equippedTool){
             case 0:
                 fishingIcon.draw(screen, 146, 50);
                 break;
@@ -182,14 +213,14 @@ class Inventory {
         screen.setTextPosition(110, 80);
         switch(id){
             case 0:seedIcons.turnip();screen.print("Turnip");break;
-            case 1:if(locks[1]){seedIcons.radish();screen.print("Radish");}else{ seedIcons.lock();screen.print("Radish");}break;
-            case 2:if(locks[2]){seedIcons.daisy();screen.print("Daisy");}else{ seedIcons.lock();screen.print("Daisy");}break;
-            case 3:if(locks[3]){seedIcons.coffee();screen.print("Coffee");}else{ seedIcons.lock();screen.print("Coffee");}break;
-            case 4:if(locks[4]){seedIcons.tea();screen.print("Tea");}else{ seedIcons.lock();screen.print("Tea");}break;
-            case 5:if(locks[5]){seedIcons.greenBean();screen.print("Green Beans");}else{ seedIcons.lock();screen.print("Green Beans");}break;
-            case 6:if(locks[6]){seedIcons.tomato();screen.print("Tomato");}else{ seedIcons.lock();screen.print("Tomato");}break;
-            case 7:if(locks[7]){seedIcons.blueberry();screen.print("Blueberry");}else{ seedIcons.lock();screen.print("Blueberry");}break;
-            case 8:if(locks[8]){seedIcons.magicFruit();screen.print("Magic Fruit");}else{ seedIcons.lock();screen.print("Magic Fruit");}break;
+            case 1:if(unlocked[1]){seedIcons.radish();screen.print("Radish");}else{ seedIcons.lock();screen.print("Radish");}break;
+            case 2:if(unlocked[2]){seedIcons.daisy();screen.print("Daisy");}else{ seedIcons.lock();screen.print("Daisy");}break;
+            case 3:if(unlocked[3]){seedIcons.coffee();screen.print("Coffee");}else{ seedIcons.lock();screen.print("Coffee");}break;
+            case 4:if(unlocked[4]){seedIcons.tea();screen.print("Tea");}else{ seedIcons.lock();screen.print("Tea");}break;
+            case 5:if(unlocked[5]){seedIcons.greenBean();screen.print("Green Beans");}else{ seedIcons.lock();screen.print("Green Beans");}break;
+            case 6:if(unlocked[6]){seedIcons.tomato();screen.print("Tomato");}else{ seedIcons.lock();screen.print("Tomato");}break;
+            case 7:if(unlocked[7]){seedIcons.blueberry();screen.print("Blueberry");}else{ seedIcons.lock();screen.print("Blueberry");}break;
+            case 8:if(unlocked[8]){seedIcons.magicFruit();screen.print("Magic Fruit");}else{ seedIcons.lock();screen.print("Magic Fruit");}break;
         }
         seedIcons.draw(screen, 145, 64);
     }

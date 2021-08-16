@@ -19,13 +19,27 @@ import images.RadishHarvest;
 import images.BlueberryYoung;
 import images.BlueberryHarvest;
 
+import images.TomatoHarvest;
+
+import images.DaisyYoung;
+import images.DaisyHarvest;
+
+import images.GreenBeanYoung;
+import images.GreenBeanHarvest;
+
+import images.CoffeeYoung;
+import images.CoffeeHarvest;
+
+import images.TeaYoung;
+import images.TeaHarvest;
+
 /**
  * CropManager is used for managing the Crop sprite lifecycles. 
  * 
  * Since we don't really animate the sprites for Crops, we use
  * regular static images, which is much easier for saving some space.
  * 
- * TODO: Finish out the artwork here
+ * TODO: Make the artwork suck less.
  */ 
 public class CropManager {
     /*
@@ -55,6 +69,20 @@ public class CropManager {
     BlueberryYoung blueberryYoung;
     BlueberryHarvest blueberryHarvest;
     
+    TomatoHarvest tomatoHarvest;
+    
+    DaisyYoung daisyYoung;
+    DaisyHarvest daisyHarvest;
+    
+    GreenBeanYoung greenBeanYoung;
+    GreenBeanHarvest greenBeanHarvest;
+    
+    CoffeeYoung coffeeYoung;
+    CoffeeHarvest coffeeHarvest;
+    
+    TeaYoung teaYoung;
+    TeaHarvest teaHarvest;
+    
     /**
      * Initializes the images for drawing
      */ 
@@ -74,6 +102,20 @@ public class CropManager {
         
         blueberryYoung = new BlueberryYoung();
         blueberryHarvest = new BlueberryHarvest();
+        
+        tomatoHarvest = new TomatoHarvest();
+        
+        daisyYoung = new DaisyYoung();;
+        daisyHarvest = new DaisyHarvest();
+        
+        greenBeanYoung = new GreenBeanYoung();
+        greenBeanHarvest = new GreenBeanHarvest();
+        
+        coffeeYoung = new CoffeeYoung();
+        coffeeHarvest = new CoffeeHarvest();
+        
+        teaYoung = new TeaYoung();
+        teaHarvest = new TeaHarvest();
     }
     
     
@@ -97,8 +139,8 @@ public class CropManager {
     private void drawTurnip(HiRes16Color screen, byte growth, short x, short y){
         switch(growth){
             case 2:seeds.draw(screen, x, y);break;
-            case 3:sprouts.draw(screen, x, y);break;
-            case 4:turnipYoung.draw(screen, x, y);break;
+            case 3:turnipYoung.draw(screen, x, y);break;
+            case 4:
             case 5:
             case 6:
             case 7: 
@@ -115,8 +157,8 @@ public class CropManager {
         switch(growth){
             case 2:seeds.draw(screen, x, y);break;
             case 3:sprouts.draw(screen, x, y);break;
-            case 4:sprouts.draw(screen, x, y);break;
-            case 5:radishYoung.draw(screen, x,y);break;
+            case 4:radishYoung.draw(screen, x,y);break;
+            case 5:
             case 6:
             case 7:
             case 8:
@@ -131,9 +173,14 @@ public class CropManager {
     private void drawDaisy(HiRes16Color screen, byte growth, short x, short y){
         switch(growth){
             case 2:seeds.draw(screen, x, y);break;
-            case 3:seeds.draw(screen, x, y);break;
-            case 4:sprouts.draw(screen, x, y);break;
-            case 5:sprouts.draw(screen, x, y);break;
+            case 3:sprouts.draw(screen, x, y);break;
+            case 4:daisyYoung.draw(screen, x, y);break;
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+                daisyHarvest.draw(screen, x, y);
+                break;
         }
     }
     
@@ -144,8 +191,13 @@ public class CropManager {
         switch(growth){
             case 2:stick.draw(screen, x, y);break;
             case 3:bush.draw(screen, x, y);break;
-            case 4:bush.draw(screen, x, y);break;
-            case 5:bush.draw(screen, x, y);break;
+            case 4:
+            case 5:coffeeYoung.draw(screen, x, y);break;
+            case 6:
+            case 7:
+            case 8:
+                coffeeHarvest.draw(screen,x,y);
+                break;
         }
     }
     
@@ -157,7 +209,12 @@ public class CropManager {
             case 2:stick.draw(screen, x, y);break;
             case 3:stick.draw(screen, x, y);break;
             case 4:bush.draw(screen, x, y);break;
-            case 5:bush.draw(screen, x, y);break;
+            case 5:teaYoung.draw(screen, x, y);break;
+            case 6:
+            case 7:
+            case 8:
+                teaHarvest.draw(screen,x,y);
+                break;
         }
     }
     
@@ -169,7 +226,12 @@ public class CropManager {
             case 2: seeds.draw(screen, x, y);break;
             case 3: stick.draw(screen, x, y);break;
             case 4: bush.draw(screen, x, y);break;
-            case 5: bush.draw(screen, x, y);break;
+            case 5: 
+            case 6: greenBeanYoung.draw(screen, x, y);break;
+            case 7:
+            case 8:
+                greenBeanHarvest.draw(screen,x,y);
+                break;
         }
     }
     
@@ -182,6 +244,12 @@ public class CropManager {
             case 3: stick.draw(screen, x, y);break;
             case 4: bush.draw(screen, x, y);break;
             case 5: bush.draw(screen, x, y);break;
+            case 6: blueberryYoung.draw(screen, x, y);break;
+            case 7:
+            case 8:
+                tomatoHarvest.draw(screen, x,y);
+                break;
+            
         }
     }
     
@@ -196,13 +264,25 @@ public class CropManager {
             case 5: bush.draw(screen, x, y);break;
             case 6: 
             case 7: blueberryYoung.draw(screen, x, y);break;
-            case 8: blueberryHarvest.draw(screen, x, y);break;
+            case 8: 
+                blueberryHarvest.draw(screen, x, y);
+                break;
         }
     }
     
     /**
      * MagicFruit is harvestable at growth 8
      */
-    private void drawMagicFruit(HiRes16Color screen, byte growth, short x, short y){}
+    private void drawMagicFruit(HiRes16Color screen, byte growth, short x, short y){
+        switch(growth){
+            case 2: break;
+            case 3: break;
+            case 4: break;
+            case 5: break;
+            case 6: break;
+            case 7: break;
+            case 8: break;
+        }
+    }
     
 }
