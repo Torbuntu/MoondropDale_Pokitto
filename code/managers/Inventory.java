@@ -153,10 +153,10 @@ class Inventory {
         }
     }
     
-    // 0:hoe, 1:water, 2:planter, 3:fishing rod 
+    // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
     void drawHud(HiRes16Color screen, boolean fish){
         screen.setTextColor(1);
-        screen.setTextPosition(120, 158);
+        screen.setTextPosition(124, 156);
         screen.print("$"+monies);
                 
         // Unlock the fishing rod?
@@ -181,7 +181,11 @@ class Inventory {
             case 7:seedIcons.blueberry();break;
             case 8:seedIcons.magicFruit();break;
         }
-        seedIcons.draw(screen, 104, 155);
+        if(equippedTool == 4){
+            screen.setPixel(105, 158, 14);
+            screen.drawRect(106, 154, 13, 11, 14);
+        }
+        seedIcons.draw(screen, 108, 156);
 
         // Show selected
         screen.drawRect(3+equippedTool*20, 154, 21,17, 14);
