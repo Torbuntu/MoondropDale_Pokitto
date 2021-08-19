@@ -74,7 +74,7 @@ class Player {
     }
     void moveUp(){
         if(y <= 0)return;
-        if(x > 130 && y <= 16)return;
+        if(x > 130 && y <= 24)return;
         character == 1 ? tor.idleUp() : lol.idleUp();
         switch(face){
             case 0:

@@ -9,12 +9,9 @@ import femto.font.TIC80;
 
 import code.Globals;
 import code.Main;
-
 import code.entities.Player;
-
 import code.managers.Inventory;
 import code.managers.CropManager;
-
 import code.stages.Title;
 
 import sprites.Hoe;
@@ -24,7 +21,6 @@ import sprites.Basket;
 import sprites.FishingRod;
 import sprites.Pond;
 import sprites.Wave;
-
 import sprites.Butterfly;
 
 import images.Arm;
@@ -34,10 +30,16 @@ import images.GrassV;
 import images.GrassH;
 import images.Stone;
 import images.Door;
-
 import images.TimeWindowSunny;
 import images.TimeWindowRainy;
 import images.Moon;
+import images.Tree;
+import images.Roof;
+import images.UnTilled;
+import images.Tilled;
+import images.WetTilled;
+
+import audio.Splash;
 
 class Garden extends State {
 
@@ -59,6 +61,14 @@ class Garden extends State {
     TimeWindowSunny timeWindowSunny;
     TimeWindowRainy timeWindowRainy;
     Moon moon;
+    Tree tree;
+    Roof roof;
+    
+    Tilled tilled;
+    UnTilled unTilled;
+    WetTilled wetTilled;
+    
+    Splash splash;
 
     Hoe hoe;
     byte swingHoe;
@@ -90,9 +100,9 @@ class Garden extends State {
     byte gameState;
 
     boolean exit, move, shop, summary;
-    boolean raining, confirm;
+    boolean raining, confirm, checkTree, foundSomething;
     boolean fishingAvailable, catchSuccess;
-    byte caughtSize, catchTime, fishTime;
+    byte caughtSize, catchTime, fishTime, treeDialog, foundItem;
 
     final private short w = 10, h = 8;
 
@@ -102,6 +112,8 @@ class Garden extends State {
     byte[] watered;
 
     void init() {
+        splash = new Splash(0);
+        
         screen = Globals.screen;
         day = Globals.saveManager.day;
         fishingAvailable = Globals.saveManager.fishing;
@@ -110,7 +122,7 @@ class Garden extends State {
         inventory = new Inventory();
         cropManager = new CropManager();
 
-        dayProgress = hour = cursor = gameState = 0;
+        foundItem = treeDialog = dayProgress = hour = cursor = gameState = 0;
         swingRod = swingBasket = swingWater = swingHoe = swingPlanter = 0;
         tool = 1;
 
@@ -147,7 +159,13 @@ class Garden extends State {
         timeWindowSunny = new TimeWindowSunny();
         timeWindowRainy = new TimeWindowRainy();
         moon = new Moon();
+        tree = new Tree();
+        roof = new Roof();
 
+        tilled = new Tilled();
+        unTilled = new UnTilled();
+        wetTilled = new WetTilled();
+        
         arm = new Arm();
         corner = new Corner();
 
@@ -170,7 +188,7 @@ class Garden extends State {
 
         // booleans
         move = true;
-        shop = catchSuccess = summary = raining = confirm = false;
+        foundSomething = shop = checkTree = catchSuccess = summary = raining = confirm = false;
     }
 
     void shutdown() {
@@ -238,8 +256,8 @@ class Garden extends State {
         }
 
         // FPS
-        screen.setTextPosition(0, 0);
-        screen.print(screen.fps());
+        //screen.setTextPosition(0, 0);
+        //screen.print(screen.fps());
         screen.flush();
     }
 
@@ -282,14 +300,16 @@ class Garden extends State {
                 if (growth[i] > 0) {
                     if (type[i] > 0 && watered[i] == 1) {
                         if (growth[i] < 9) growth[i]++;
-                        //growth[i] = growth[i] < 9 ? growth[i]++ : 9;
-                        System.out.println("GROW!" + (int) growth[i]);
                     }
                     // set water based on raining
                     watered[i] = raining ? 1 : 0;
                 }
             }
-
+            foundSomething = (Math.random(0,2) == 1);
+            if(foundSomething){
+                foundItem = getFoundItem();
+            }
+            treeDialog = 0;
             gameState = 3;
             return;
         }
@@ -303,6 +323,54 @@ class Garden extends State {
             if (Button.B.justPressed()) {
                 confirm = false;
             }
+            return;
+        }
+        
+        if(checkTree){
+            switch(treeDialog){
+                case 0:
+                    dialog("Hello there!");
+                    if(foundSomething){
+                        dialogLine("I found something today!");
+                        if (Button.B.justPressed()) {
+                            treeDialog = 1;
+                        }
+                    }else{
+                        dialogLine("Nothing found today...");
+                        if (Button.B.justPressed()) {
+                            checkTree = false;
+                            treeDialog = 2;
+                        }
+                    }
+                    
+                    break;
+                case 1:
+                    dialog("You can have this.");
+                    switch(foundItem){
+                        case 0:dialogLine("It's a Turnip seed!");break;
+                        case 1:dialogLine("It's a Radish seed!");break;
+                        case 2:dialogLine("It's a Daisy seed!");break;
+                        case 3:dialogLine("It's a Coffee seed!");break;
+                        case 4:dialogLine("It's a Tea seed!");break;
+                        case 5:dialogLine("It's a GreenBean seed!");break;
+                        case 6:dialogLine("It's a Tomato seed!");break;
+                        case 7:dialogLine("It's a Blueberry seed!");break;
+                        case 8:dialogLine("It's a Magic seed!");break;
+                    }
+                    if (Button.B.justPressed()) {
+                        inventory.quantities[foundItem]++;
+                        checkTree = false;
+                        treeDialog = 2;
+                    }
+                    break;
+                case 2:
+                    dialog("Let's talk tomorrow.");
+                    if (Button.B.justPressed()) {
+                        checkTree = false;
+                    }
+                    break;
+            }
+            
             return;
         }
 
@@ -327,10 +395,11 @@ class Garden extends State {
         // handle movement
         if (move) {
             if (Button.A.justPressed()) {
-                if (butterfly.x < player.x + player.w &&
-                    butterfly.x + butterfly.width() > player.x &&
-                    butterfly.y < player.y + player.h &&
-                    butterfly.y + butterfly.height() > player.y) {
+                // CheckButterfly
+                if (butterfly.x < player.x + player.w
+                    && butterfly.x + butterfly.width() > player.x
+                    && butterfly.y < player.y + player.h
+                    && butterfly.y + butterfly.height() > player.y) {
                     if (Math.random(0, 10) == 5) {
                         butterflyLine = 5;
                         gameState = 4;
@@ -343,9 +412,17 @@ class Garden extends State {
                         return;
                     }
                 }
-                // TODO: if player is at the door to house, end the day
-                if (player.x >= 160 && player.x < 160 + door.width() && player.y < 32) {
+                
+                // CheckEndDay
+                if (player.x >= 150 && player.x < 150 + door.width() && player.y < 32) {
                     confirm = true;
+                    return;
+                }
+                
+                // CheckTree
+                if(player.x >= 180 && player.x <= 210 && player.y < 40){
+                    
+                    checkTree = true;
                     return;
                 }
 
@@ -383,6 +460,15 @@ class Garden extends State {
         }
     }
 
+    byte getFoundItem(){
+        byte found = Math.random(0,9);
+        if(inventory.unlocked[found]){
+            return found;
+        }else{
+            return 0;
+        }
+    }
+
     void render() {
         // -- Render --
         if (raining) screen.clear(11);
@@ -396,14 +482,14 @@ class Garden extends State {
             byte x = (i % 12);
             byte y = (i / 12);
             byte id = x + y * 12;
-            if (type[id] == 0 && growth[id] == 0) continue;
+            if (type[id] == 0 && growth[id] == 0){
+                unTilled.draw(screen, 50+x*10, 64+y*8);
+                continue;    
+            } 
             if (growth[id] > 0) {
-                if (watered[id] == 1) screen.fillRect(50 + x * 10, 64 + y * 8, 10, 8, 8);
-                else screen.fillRect(50 + x * 10, 64 + y * 8, 10, 8, 7);
-            } else {
-                screen.fillRect(50 + x * 10, 64 + y * 8, 10, 8, 6);
-                continue;
-            }
+                if (watered[id] == 1) wetTilled.draw(screen, 50+x*10, 64+y*8);
+                else tilled.draw(screen, 50+x*10, 64+y*8);
+            } 
             if (type[id] > 0) renderCrop(id, 50 + x * 10, 64 + y * 8);
         }
 
@@ -692,6 +778,7 @@ class Garden extends State {
                 swingWater = 20;
                 move = false;
                 tool = 2;
+                splash.play();
             }
         }
     }
@@ -834,7 +921,6 @@ class Garden extends State {
     }
 
     void renderScene() {
-
         // Pond
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 19; y++) {
@@ -844,19 +930,20 @@ class Garden extends State {
         for (int i = 0; i < 19; i++) {
             wave.draw(screen, 28, i * h);
         }
-        //System.out.println(screen.fps());
 
         // house
-        for (int i = 0; i < 8; i++) {
-            stone.draw(screen, 140 + i * 10, 8);
-            stone.draw(screen, 140 + i * 10, 16);
+        screen.drawVLine(129, 10, 18, 1);
+        for (int i = 0; i < 9; i++) {
+            stone.draw(screen, 130 + i * 10, 12);
+            stone.draw(screen, 130 + i * 10, 20);
         }
-        door.draw(screen, 160, 8);
+        door.draw(screen, 150, 12);
 
         // Roof
-        // TODO: Make real roof graphics
-        screen.drawRect(129, 0, 92, 8, 1);
-        screen.fillRect(130, 0, 90, 8, 12);
+        screen.drawVLine(119, 0, 15, 1);
+        for(byte i = 0; i < 4; i++){
+            roof.draw(screen, 120+i*32, 0);
+        }
 
         // field zone
         // TODO: replace this with untilled soil sprite
@@ -870,6 +957,9 @@ class Garden extends State {
             grassV.draw(screen, 46, 64 + i * 8);
             grassV.draw(screen, 168, 64 + i * 8, true, false, false);
         }
+        
+        // Tree 
+        tree.draw(screen, 184, 4);
     }
 
     /**
