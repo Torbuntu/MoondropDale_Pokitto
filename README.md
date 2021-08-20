@@ -40,47 +40,21 @@ the same Seed then Sapling before specific crop sprites.
 
 ## TODO
 
-- Finish the shop view. 
-  - The shop will display each available seed option. 
-  - The unavailable will show some sort of "locked" icon. 
-    - Maybe when a locked item is hilighted, it will give a hint to unlock it.
-  - Available seed options will show a price and current quantity when hilighted.
-  
-  
-- Add the currency to the pause menu so players know how much money they have.
-
-- Add a day transition view.
-  - Show how much money was earned, if any.
-  - Give a little story info? (like "it will be a nice day" or "It will be rainy tomorrow!")
-  
-- Add progression system for crops.
-
-- Update/Finish Crop growth cycles.
-
-- Update/add Crops harvest sales. 
- 
-- Add weather.
-  - Right now maybe just rain or nah.
-  
-- Update/Add animations
-  - Crops
-  - Tool usage
-    - When used, the affected tile should be animated somehow
-  - Harvest + Money earned animation
-  - Movement(?)
-  - Rain
-  - Water in the pond
+- Add details to end of day summary.
   
 - Add sfx and music
 
-- Add Title menu (start/new game, delete data)
-
 - Finish/Update character select screen (after Title screen if New Game selected)
 
-- Change "real" crops for pretend ones.
+? Change "real" crops for pretend ones.
 
-- Move the Crop rendering logic outside of the Crop object. 
-- Crop objects will only store data (type, growth, x, y, watered) allowing a LOT more of them to be stored at once.
-- Only store actual Crops in the array. Update the `field` file to accept 4 data parameters per crop (type, growth, x, y). This way we only store actual crops and not empty items.
-
+- Add trees to Title page for more "atmosphere"
+- Replce awful water sound
+- Add donk sound for forbidden actions (empty water/seed, untillable land, not harvestable etc...)
+- Add a pling + few second timer after successful save before return to Title
+- Add water fill sound
+- Add boop sound on dialog action
+- Add atmosphere/music in Garden scene
+? Add toggle in menu to switch between atmosphere and music in Garden scene
+? Question: Does the plan sound need to be different from the Hoe sound?
 

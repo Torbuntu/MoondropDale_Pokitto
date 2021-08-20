@@ -6,27 +6,35 @@ import femto.State;
 import femto.input.Button;
 import femto.font.TIC80;
 import femto.sound.Stream;
-import femto.sound.Mixer;
 
 import code.Globals;
 
 import code.stages.Garden;
 
+import sprites.Butterfly;
 import sprites.Tor;
 import sprites.Lol;
-import sprites.TitleBanner;
+import sprites.TitleMoon;
+import images.TitleBanner;
+
+import audio.Coin;
 
 class Title extends State {
 
+    Butterfly butterfly;
     Tor tor;
     Lol lol;
     TitleBanner title;
+    TitleMoon moon;
     HiRes16Color screen;
-
-    byte stage, cursor;
+    
+    Coin coin;
+    
+    byte stage, cursor, butterflyMove;
     boolean resume;
 
     void init() {
+        coin = new Coin(0);
         screen = Globals.screen;
         resume = (Globals.character > 0);
         lol = new Lol();
@@ -36,9 +44,15 @@ class Title extends State {
         tor.idleDown();
 
         title = new TitleBanner();
-        title.idle();
+        moon = new TitleMoon();
+        moon.idle();
+        
+        butterfly = new Butterfly();
+        butterfly.x = 100;
+        butterfly.y = 100;
+        butterfly.flap();
+        butterflyMove = 100;
 
-        Mixer.init(8000);
         Stream.play("music/mddal.raw");
 
         stage = 0;
@@ -48,8 +62,33 @@ class Title extends State {
     void shutdown() {
         screen = null;
         title = null;
+        moon = null;
         tor = null;
         lol = null;
+        butterfly = null;
+    }
+    
+    void updateButterfly() {
+        butterflyMove--;
+        if (butterflyMove < 0) {
+            butterflyMove = 100;
+            if (butterfly.x > 200) {
+                butterfly.x -= 10;
+            } else if (butterfly.x < 10) {
+                butterfly.x += 10;
+            } else {
+                butterfly.x += Math.random(-10, 11);
+            }
+
+            if (butterfly.y > 130) {
+                butterfly.y -= 10;
+            } else if (butterfly.y < 20) {
+                butterfly.y += 10;
+            } else {
+                butterfly.y += Math.random(-8, 9);
+            }
+        }
+        butterfly.draw(screen);
     }
 
     void update() {
@@ -58,7 +97,9 @@ class Title extends State {
         screen.clear(10);
         screen.setTextColor(2);
 
-        title.draw(screen, 0, 0);
+        screen.fillRect(0,0,220, 80,15);
+        title.draw(screen, 32, 10);
+        moon.draw(screen, 40, 36);
 
         switch (stage) {
             case 0: //New,[Continue]
@@ -87,6 +128,7 @@ class Title extends State {
                 screen.println("New Garden");
 
                 if (Button.A.justPressed()) {
+                    coin.play();
                     if (cursor == 1) {
                         stage = 1;
                     } else Game.changeState(new Garden());
@@ -96,6 +138,7 @@ class Title extends State {
             case 1: //Character select
                 if (Button.A.justPressed()) {
                     Globals.reset();
+                    coin.play();
                     Game.changeState(new Garden());
                 }
                 if (Button.Left.justPressed()) {
@@ -124,6 +167,7 @@ class Title extends State {
                 lol.draw(screen, 100, 100);
                 break;
         }
+        updateButterfly();
 
         screen.flush();
     }

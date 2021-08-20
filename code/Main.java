@@ -14,6 +14,7 @@ class Main extends State {
     // and TIC80 as the menu's font
     public static void main(String[] args){
         Globals.init();
+        Mixer.init(8000);
         Game.run( TIC80.font(), new Title() );
     }
     
