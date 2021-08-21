@@ -3,7 +3,11 @@
 # Building
 This project is built using [FemtoIDE](https://github.com/felipemanga/femtoIDE) for the [Pokitto](https://talk.pokitto.com/)
 
-## Title music: https://opengameart.org/content/a-new-town-rpg-theme
+#### Title music: 
+https://opengameart.org/content/a-new-town-rpg-theme
+
+#### Garden music:
+https://opengameart.org/content/town-theme-rpg
 
 ## Crop types and growth data
 
@@ -41,8 +45,6 @@ the same Seed then Sapling before specific crop sprites.
 ## TODO
 
 - Add details to end of day summary.
-  
-- Add sfx and music
 
 - Finish/Update character select screen (after Title screen if New Game selected)
 
@@ -52,8 +54,6 @@ the same Seed then Sapling before specific crop sprites.
 - Replce awful water sound
 - Add donk sound for forbidden actions (empty water/seed, untillable land, not harvestable etc...)
 - Add a pling + few second timer after successful save before return to Title
-- Add water fill sound
-- Add boop sound on dialog action
 - Add atmosphere/music in Garden scene
 ? Add toggle in menu to switch between atmosphere and music in Garden scene
 ? Question: Does the plan sound need to be different from the Hoe sound?

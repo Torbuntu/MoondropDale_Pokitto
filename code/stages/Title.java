@@ -34,7 +34,7 @@ class Title extends State {
     boolean resume;
 
     void init() {
-        coin = new Coin(0);
+        coin = new Coin(2);
         screen = Globals.screen;
         resume = (Globals.character > 0);
         lol = new Lol();

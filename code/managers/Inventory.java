@@ -222,6 +222,9 @@ class Inventory {
             screen.drawRect(106, 154, 13, 11, 14);
         }
         seedIcons.draw(screen, 108, 156);
+        
+        screen.setTextPosition(108, 168);
+        screen.print( (int) quantities[equippedSeed]);
 
         // Show selected
         screen.drawRect(3 + equippedTool * 20, 154, 21, 17, 14);
@@ -248,7 +251,7 @@ class Inventory {
     }
 
     public void drawSeed(HiRes16Color screen, byte id) {
-        screen.setTextPosition(110, 90);
+        screen.setTextPosition(110, 88);
         screen.print("x" + (int) quantities[id]);
 
         screen.setTextPosition(110, 80);
@@ -330,7 +333,7 @@ class Inventory {
                 }
                 break;
         }
-        seedIcons.draw(screen, 145, 64);
+        seedIcons.draw(screen, 110, 64);
     }
 
     public void drawSeed(HiRes16Color screen) {

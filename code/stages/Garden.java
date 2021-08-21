@@ -23,6 +23,7 @@ import sprites.FishingRod;
 import sprites.Pond;
 import sprites.Wave;
 import sprites.Butterfly;
+import sprites.Eyes;
 
 import images.Arm;
 import images.Corner;
@@ -39,11 +40,19 @@ import images.Roof;
 import images.UnTilled;
 import images.Tilled;
 import images.WetTilled;
+import images.ButterflyAvatar;
+import images.MusicOn;
+import images.MusicOff;
 
 import audio.Splash;
 import audio.Coin;
 import audio.Plow;
 import audio.Harvest;
+import audio.Notice;
+import audio.Bury;
+import audio.Select;
+import audio.PowerOn;
+import audio.PowerOff;
 
 class Garden extends State {
 
@@ -52,6 +61,8 @@ class Garden extends State {
     Butterfly butterfly;
     byte butterflyMove, butterflyLine;
     String[] butterflyText;
+    
+    Eyes eyes;
 
     CropManager cropManager;
     Player player;
@@ -61,6 +72,9 @@ class Garden extends State {
     Stone stone;
     Door door;
     ActionIcon actionIcon;
+    ButterflyAvatar butterflyAvatar;
+    MusicOn musicOn;
+    MusicOff musicOff;
 
     TimeWindowSunny timeWindowSunny;
     TimeWindowRainy timeWindowRainy;
@@ -76,6 +90,11 @@ class Garden extends State {
     Coin coin;
     Plow plow;
     Harvest harvest;
+    Notice notice;
+    Bury bury;
+    Select select;
+    PowerOn powerOn;
+    PowerOff powerOff;
 
     Hoe hoe;
     byte swingHoe;
@@ -106,7 +125,7 @@ class Garden extends State {
     // 0: regular, 1: pause/menu, 2: summary, 3: fishing
     byte gameState;
 
-    boolean exit, move, shop, summary;
+    boolean exit, move, shop, summary, playMusic;
     boolean raining, confirm, foundSomething;
     boolean fishingAvailable, catchSuccess;
     byte caughtSize, catchTime, fishTime, treeDialog, foundItem;
@@ -119,10 +138,15 @@ class Garden extends State {
     byte[] watered;
 
     void init() {
-        splash = new Splash(0);
-        coin = new Coin(0);
-        plow = new Plow(0);
-        harvest = new Harvest(0);
+        splash = new Splash(2);
+        coin = new Coin(2);
+        plow = new Plow(2);
+        harvest = new Harvest(2);
+        notice = new Notice(2);
+        bury = new Bury(2);
+        select = new Select(2);
+        powerOn = new PowerOn(2);
+        powerOff = new PowerOff(2);
 
         screen = Globals.screen;
         day = Globals.saveManager.day;
@@ -143,7 +167,6 @@ class Garden extends State {
         watered = new byte[120];
         byte id = 0;
         for (int i = 0; i < (120 * 2); i += 2) {
-            //System.out.println(id);
             if (id > 120) return;
             watered[id] = 0;
             type[id] = field[i];
@@ -158,12 +181,12 @@ class Garden extends State {
         butterflyMove = 100;
         butterflyLine = 0;
         butterflyText = new String[] {
-            "Butterfly ignores you.",
-            "Butterfly flaps happily in the wind.",
-            "Butterfly does a loop! Whee~!",
-            "Butterfly gives a blank look...",
-            "Butterfly lands on your nose. Achoo~!",
-            "Butterfly leads you to treasure! $10!"
+            "It ignores you.",
+            "It flaps happily in the wind.",
+            "It does a loop! Whee~!",
+            "It gives a blank look...",
+            "It lands on your nose. Achoo~!",
+            "It leads you to treasure! $10!"
         };
 
         timeWindowSunny = new TimeWindowSunny();
@@ -171,6 +194,8 @@ class Garden extends State {
         moon = new Moon();
         tree = new Tree();
         roof = new Roof();
+        musicOn = new MusicOn();
+        musicOff = new MusicOff();
 
         tilled = new Tilled();
         unTilled = new UnTilled();
@@ -178,6 +203,8 @@ class Garden extends State {
 
         arm = new Arm();
         corner = new Corner();
+        
+        butterflyAvatar = new ButterflyAvatar();
 
         grassV = new GrassV();
         grassH = new GrassH();
@@ -195,9 +222,12 @@ class Garden extends State {
         basket = new Basket();
         rod = new FishingRod();
         rod.swing();
+        
+        eyes = new Eyes();
+        eyes.idle();
 
         // booleans
-        move = true;
+        move = playMusic = true;
         foundSomething = shop = catchSuccess = summary = raining = confirm = false;
         
         Stream.play("music/mdgard.raw");
@@ -219,7 +249,7 @@ class Garden extends State {
     }
 
     void update() {
-         Stream.update();
+        if(playMusic)Stream.update();
         // 0: regular, 1: pause/menu, 2: fishing, 3: summary, 4: Interact with butterfly, 5: Interact with Tree
         switch (gameState) {
             case 0:
@@ -242,7 +272,10 @@ class Garden extends State {
                 render();
                 dialog("Hello Butterfly! How are you today?");
                 dialogLine((String) butterflyText[butterflyLine]);
-                if (Button.B.justPressed()) gameState = 0;
+                if (Button.B.justPressed()) {
+                    gameState = 0;
+                    select.play();
+                }
 
                 updateButterfly();
                 break;
@@ -309,12 +342,14 @@ class Garden extends State {
                     dialogLine("I found something today!");
                     if (Button.B.justPressed()) {
                         treeDialog = 1;
+                        select.play();
                     }
                 } else {
                     dialogLine("Nothing found today...");
                     if (Button.B.justPressed()) {
                         treeDialog = 2;
                         gameState = 0;
+                        select.play();
                     }
                 }
 
@@ -354,12 +389,14 @@ class Garden extends State {
                     inventory.quantities[foundItem]++;
                     treeDialog = 2;
                     gameState = 0;
+                    select.play();
                 }
                 break;
             case 2:
                 dialog("Let's talk tomorrow.");
                 if (Button.B.justPressed()) {
                     gameState = 0;
+                    select.play();
                 }
                 break;
         }
@@ -400,8 +437,10 @@ class Garden extends State {
             if (Button.A.justPressed()) {
                 dayProgress = 201;
                 confirm = false;
+                select.play();
             }
             if (Button.B.justPressed()) {
+                select.play();
                 confirm = false;
             }
             return;
@@ -423,6 +462,7 @@ class Garden extends State {
             gameState = 1;
             menuOffset = 120;
             exit = false;
+            powerOn.play();
         }
 
         // handle movement
@@ -542,6 +582,7 @@ class Garden extends State {
         if (Button.B.justPressed() || Button.C.justPressed()) {
             gameState = 0;
             day++;
+            select.play();
             player.moveDown();
         }
 
@@ -640,6 +681,7 @@ class Garden extends State {
 
         if (Button.B.justPressed()) {
             shop = false;
+            select.play();
             cursor = 1;
         }
     }
@@ -701,24 +743,36 @@ class Garden extends State {
             }
             if (Button.B.justPressed()) {
                 confirm = false;
+                select.play();
             }
             return;
         }
 
-        // Seed Select (cursor == 1)
+        // Seed Select (cursor == 0)
         screen.setTextPosition(45, 80);
         if (cursor == 0) screen.print("> ");
         screen.print("Seed:");
         inventory.drawSeed(screen);
+        
+        // Music On/Off
+        screen.setTextPosition(45, 96);
+        if( cursor == 1)screen.print("> ");
+        screen.print("Music: ");
+        if(playMusic){
+            musicOn.draw(screen, 110, 96);
+        }else{
+            musicOff.draw(screen, 110, 96);
+        }
+        
 
         // Seed Shop (cursor == 2)
         screen.setTextPosition(45, 106);
-        if (cursor == 1) screen.print("> ");
+        if (cursor == 2) screen.print("> ");
         screen.print("Enter Shop");
 
         // Save and quit (cursor == 3)
         screen.setTextPosition(45, 116);
-        if (cursor == 2) screen.print("> ");
+        if (cursor == 3) screen.print("> ");
         screen.print("Save & Quit");
 
         screen.setTextPosition(45, 126);
@@ -727,7 +781,7 @@ class Garden extends State {
         if (Button.Up.justPressed()) cursor--;
         if (Button.Down.justPressed()) cursor++;
         if (cursor < 0) cursor = 0;
-        if (cursor > 2) cursor = 2;
+        if (cursor > 3) cursor = 3;
 
 
         if (Button.Left.justPressed()) {
@@ -737,6 +791,9 @@ class Garden extends State {
                         inventory.equippedSeed--;
                     }
                 }
+            }
+            if(cursor == 1){
+                playMusic = false;
             }
         }
         if (Button.Right.justPressed()) {
@@ -748,20 +805,27 @@ class Garden extends State {
                     }
                 }
             }
+            if(cursor == 1){
+                playMusic = true;
+            }
         }
 
         if (Button.A.justPressed()) {
-            if (cursor == 1) {
+            if(cursor == 1){
+                playMusic = !playMusic;
+            }
+            if (cursor == 2) {
                 cursor = 0;
                 shop = true;
             }
-            if (cursor == 2) {
+            if (cursor == 3) {
                 confirm = true;
             }
         }
 
         if (Button.B.justPressed() || Button.C.justPressed()) {
             exit = true;
+            powerOff.play();
         }
 
     }
@@ -799,9 +863,10 @@ class Garden extends State {
 
     void useWater() {
         // If at the pond, fill the water
-        if (player.x < 40) inventory.fill = 8;
-
-        else if (inField() && inventory.fill > 0) {
+        if (player.x < 40) {
+            inventory.fill = 8;
+            splash.play();
+        } else if (inField() && inventory.fill > 0) {
             short id = getFieldId();
             if (growth[id] > 0) {
                 inventory.fill--;
@@ -891,7 +956,7 @@ class Garden extends State {
                 swingPlanter = 20;
                 move = false;
                 tool = 4;
-                plow.play();
+                bury.play();
             }
         }
     }
@@ -1011,6 +1076,7 @@ class Garden extends State {
                 catchSuccess = false;
                 inventory.monies += (int)(caughtSize * 2);
                 gameState = 0;
+                select.play();
             }
             dialog("You caught a fish!\n");
             dialogLine("It is " + (int) caughtSize + "cm! You sell for $" + (int)(caughtSize * 2));
@@ -1021,6 +1087,7 @@ class Garden extends State {
 
         if (Button.B.justPressed()) {
             //cancel out
+            select.play();
             catchSuccess = false;
             gameState = 0;
             return;
@@ -1029,7 +1096,7 @@ class Garden extends State {
         if (fishTime > 0) fishTime--;
         if (fishTime == 0) {
             fishTime--;
-            // play hook sound!
+            notice.play();
             catchTime = 25;
         }
 
@@ -1045,6 +1112,7 @@ class Garden extends State {
             dialog("The fish got away...");
             if (Button.B.justPressed()) {
                 gameState = 0;
+                select.play();
                 catchSuccess = false;
             }
         }
@@ -1052,12 +1120,20 @@ class Garden extends State {
 
     void dialog(String text) {
         screen.fillRect(0, 0, 220, 30, 1);
-        screen.drawRect(0, 0, 219, 29, 5);
+        screen.drawRect(1, 1, 217, 27, 14);
+        
+        if(gameState == 5){
+            eyes.draw(screen, 204, 4);
+        }
+        if(gameState == 4){
+            butterflyAvatar.draw(screen, 204, 4);
+        }
+        
         screen.setTextPosition(3, 3);
         screen.setTextColor(2);
         screen.print(text);
 
-        screen.setTextPosition(200, 22);
+        screen.setTextPosition(202, 22);
         screen.print("[B]");
     }
     void dialogLine(String text) {

@@ -53,6 +53,7 @@ class Player {
     }
     void moveRight(){
         if(x >= 210)return;
+        if(y <= 24 && x >= 120)return;
         character == 1 ? tor.idleHori() : lol.idleHori();
         character == 1 ? tor.setMirrored(true) : lol.setMirrored(true);
         switch(face){
@@ -74,7 +75,7 @@ class Player {
     }
     void moveUp(){
         if(y <= 0)return;
-        if(x > 130 && y <= 24)return;
+        if(x > 110 && y <= 24)return;
         character == 1 ? tor.idleUp() : lol.idleUp();
         switch(face){
             case 0:
