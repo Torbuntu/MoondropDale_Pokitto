@@ -62,6 +62,9 @@ class Garden extends State {
     byte butterflyMove, butterflyLine;
     String[] butterflyText;
     
+    byte tipLine;
+    String[] tips;
+    
     Eyes eyes;
 
     CropManager cropManager;
@@ -157,7 +160,7 @@ class Garden extends State {
         cropManager = new CropManager();
 
         foundItem = treeDialog = dayProgress = hour = cursor = gameState = 0;
-        swingRod = swingBasket = swingWater = swingHoe = swingPlanter = 0;
+        tipLine = swingRod = swingBasket = swingWater = swingHoe = swingPlanter = 0;
         tool = 1;
 
         byte[] field = Globals.load("field");
@@ -187,6 +190,13 @@ class Garden extends State {
             "It gives a blank look...",
             "It lands on your nose. Achoo~!",
             "It leads you to treasure! $10!"
+        };
+        
+        tips = new String[]{
+            "The Butterfly is helpful.",
+            "Check the Tree daily.",
+            "Fishing is easy money here!",
+            "When plowed, rain water holds!"
         };
 
         timeWindowSunny = new TimeWindowSunny();
@@ -264,6 +274,7 @@ class Garden extends State {
             case 2:
                 render();
                 updateFishing();
+                updateButterfly();
                 break;
             case 3:
                 updateSummary();
@@ -287,21 +298,19 @@ class Garden extends State {
         }
 
         if (gameState != 3) {
-            // UI box
-            screen.fillRect(0, 152, 220, 24, 5);
             // Render the HUD (equipped item, seed amount, Monies);
             inventory.drawHud(screen, fishingAvailable);
 
             // Render day progression.
             if (raining) {
-                timeWindowRainy.draw(screen, 184, 154);
+                timeWindowRainy.draw(screen, 184, 156);
             } else {
-                timeWindowSunny.draw(screen, 184, 154);
+                timeWindowSunny.draw(screen, 184, 156);
             }
-            moon.draw(screen, 185 + (dayProgress * 26 / 200), 160);
+            moon.draw(screen, 185 + (dayProgress * 26 / 200), 161);
 
-            screen.setTextPosition(124, 162);
-            screen.print("Day: " + (int) day);
+            screen.setTextPosition(124, 163);
+            screen.print("Day:" + (int) day);
 
         }
 
@@ -413,6 +422,8 @@ class Garden extends State {
         if (dayProgress > 200) {
             dayProgress = 0;
             raining = (Math.random(0, 3) == 1);
+            if(raining)Stream.play("music/mdrain.raw");
+            else Stream.play("music/mdgard.raw");
 
             for (byte i = 0; i < 120; i++) {
                 if (growth[i] > 0) {
@@ -429,6 +440,7 @@ class Garden extends State {
             }
             treeDialog = 0;
             gameState = 3;
+            summary = true;
             return;
         }
         if (confirm) {
@@ -579,16 +591,26 @@ class Garden extends State {
 
     void updateSummary() {
         screen.clear(1);
-        if (Button.B.justPressed() || Button.C.justPressed()) {
-            gameState = 0;
-            day++;
-            select.play();
-            player.moveDown();
-        }
-
-        dialog("The day is over. You rest.");
-        if (raining) {
-            dialogLine("It rains during the night.");
+        
+        if(summary){
+            if(Button.B.justPressed()){
+                select.play();
+                summary = false;
+                tipLine = Math.random(0,4);
+            }
+            dialog("The day is over. You rest.");
+            if (raining) {
+                dialogLine("It rains during the night.");
+            }
+        
+        }else{
+            if (Button.B.justPressed() || Button.C.justPressed()) {
+                gameState = 0;
+                day++;
+                select.play();
+                player.moveDown();
+            }
+            dialog((String) tips[tipLine]);
         }
 
     }
@@ -886,7 +908,6 @@ class Garden extends State {
         if (inField()) {
             short id = getFieldId();
             if (type[id] == 0) return;
-            // TODO: Check for type and growth to determine if ready for harvest
             switch (type[id]) {
                 case 0: //nothing
                     return;
@@ -1047,7 +1068,7 @@ class Garden extends State {
 
         // field zone
         // TODO: replace this with untilled soil sprite
-        screen.fillRect(50, 64, 120, 80, 3);
+        //screen.fillRect(50, 64, 120, 80, 3);
 
         for (int i = 0; i < 12; i++) {
             grassH.draw(screen, 50 + i * 10, 60);

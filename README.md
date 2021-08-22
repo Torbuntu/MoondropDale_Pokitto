@@ -7,8 +7,8 @@ This project is built using [FemtoIDE](https://github.com/felipemanga/femtoIDE) 
 https://opengameart.org/content/a-new-town-rpg-theme
 
 #### Garden music:
-https://opengameart.org/content/town-theme-rpg
-
+Sun: https://opengameart.org/content/town-theme-rpg
+Rain: https://opengameart.org/content/school-day-rain-sun-loop
 ## Crop types and growth data
 
 type-growth
@@ -44,17 +44,9 @@ the same Seed then Sapling before specific crop sprites.
 
 ## TODO
 
-- Add details to end of day summary.
-
-- Finish/Update character select screen (after Title screen if New Game selected)
-
 ? Change "real" crops for pretend ones.
 
-- Add trees to Title page for more "atmosphere"
-- Replce awful water sound
 - Add donk sound for forbidden actions (empty water/seed, untillable land, not harvestable etc...)
 - Add a pling + few second timer after successful save before return to Title
-- Add atmosphere/music in Garden scene
-? Add toggle in menu to switch between atmosphere and music in Garden scene
-? Question: Does the plan sound need to be different from the Hoe sound?
+- Add atmosphere in Garden scene when music off
 

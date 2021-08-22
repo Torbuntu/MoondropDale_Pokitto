@@ -152,7 +152,7 @@ class Inventory {
     }
 
     public boolean buySuccess(byte id) {
-        if (unlocked[id]) {
+        if (unlocked[id] && quantities[id] < 99) {
             if (monies >= cost[id]) {
                 monies -= cost[id];
                 quantities[id]++;
@@ -173,8 +173,11 @@ class Inventory {
 
     // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
     void drawHud(HiRes16Color screen, boolean fish) {
-        screen.setTextColor(1);
-        screen.setTextPosition(124, 156);
+        // UI box
+        screen.fillRect(0, 152, 220, 24, 1);
+        screen.drawRect(1, 153, 120, 22, 14);
+        screen.setTextColor(2);
+        screen.setTextPosition(124, 155);
         screen.print("$" + monies);
 
         // Unlock the fishing rod?
@@ -223,7 +226,7 @@ class Inventory {
         }
         seedIcons.draw(screen, 108, 156);
         
-        screen.setTextPosition(108, 168);
+        screen.setTextPosition(107, 167);
         screen.print( (int) quantities[equippedSeed]);
 
         // Show selected

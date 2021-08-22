@@ -15,7 +15,9 @@ import sprites.Butterfly;
 import sprites.Tor;
 import sprites.Lol;
 import sprites.TitleMoon;
+
 import images.TitleBanner;
+import images.Tree;
 
 import audio.Coin;
 
@@ -26,6 +28,7 @@ class Title extends State {
     Lol lol;
     TitleBanner title;
     TitleMoon moon;
+    Tree tree;
     HiRes16Color screen;
     
     Coin coin;
@@ -47,6 +50,8 @@ class Title extends State {
         moon = new TitleMoon();
         moon.idle();
         
+        tree = new Tree();
+        
         butterfly = new Butterfly();
         butterfly.x = 100;
         butterfly.y = 100;
@@ -66,6 +71,8 @@ class Title extends State {
         tor = null;
         lol = null;
         butterfly = null;
+        tree = null;
+        title = null;
     }
     
     void updateButterfly() {
@@ -98,8 +105,14 @@ class Title extends State {
         screen.setTextColor(2);
 
         screen.fillRect(0,0,220, 80,15);
+        
+        screen.fillRect(0,80,220,13, 1);
+        screen.drawRect(1,81,217,10,14);
+        
         title.draw(screen, 32, 10);
         moon.draw(screen, 40, 36);
+        
+        tree.draw(screen, 160, 120);
 
         switch (stage) {
             case 0: //New,[Continue]
@@ -111,7 +124,7 @@ class Title extends State {
                     if (Button.Up.justPressed()) {
                         cursor = 0;
                     }
-                    screen.setTextPosition(0, 84);
+                    screen.setTextPosition(3, 84);
                     screen.println("Welcome Back to Moondrop Dale!");
 
                     screen.setTextPosition(0, 94);
@@ -119,7 +132,7 @@ class Title extends State {
                     screen.println("Continue");
 
                 } else {
-                    screen.setTextPosition(0, 84);
+                    screen.setTextPosition(3, 84);
                     screen.println("Welcome to Moondrop Dale!");
                 }
 
@@ -149,27 +162,25 @@ class Title extends State {
                     Globals.character = 2;
                 }
 
-                screen.setTextPosition(0, 84);
-                screen.println("Welcome to Moondrop Dale!");
-                screen.println("Select a player: ");
+                screen.setTextPosition(3, 84);
+                screen.print("Select a player: ");
 
                 if (Globals.character == 1) {
-                    screen.drawRect(38, 98, 24, 26, 14);
-                    screen.setTextPosition(0, 100);
+                    screen.drawRect(38, 98, 14, 14, 14);
+                    //screen.setTextPosition(0, 100);
                     screen.print("Tor!");
                 } else {
-                    screen.drawRect(98, 98, 24, 26, 14);
-                    screen.setTextPosition(0, 100);
+                    screen.drawRect(62, 98, 14, 14, 14);
+                    //screen.setTextPosition(0, 100);
                     screen.print("Lol!");
                 }
 
                 tor.draw(screen, 40, 100);
-                lol.draw(screen, 100, 100);
+                lol.draw(screen, 64, 100);
                 break;
         }
         updateButterfly();
 
         screen.flush();
     }
-
 }
