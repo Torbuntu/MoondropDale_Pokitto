@@ -61,6 +61,7 @@ class Garden extends State {
     Butterfly butterfly;
     byte butterflyMove, butterflyLine;
     String[] butterflyText;
+    boolean butterflyCaptive;
     
     byte tipLine;
     String[] tips;
@@ -120,7 +121,7 @@ class Garden extends State {
     Corner corner;
 
     byte hour, cursor, menuOffset;
-    short day, dayProgress;
+    short day, dayProgress, moveTime;
 
     // Used in the checkTool `switch` to avoid lots of `if` checks
     byte tool;
@@ -238,7 +239,8 @@ class Garden extends State {
 
         // booleans
         move = playMusic = true;
-        foundSomething = shop = catchSuccess = summary = raining = confirm = false;
+        butterflyCaptive = foundSomething = shop = catchSuccess = summary = raining = confirm = false;
+        moveTime = 0;
         
         Stream.play("music/mdgard.raw");
     }
@@ -286,6 +288,7 @@ class Garden extends State {
                 if (Button.B.justPressed()) {
                     gameState = 0;
                     select.play();
+                    butterflyCaptive = true;
                 }
 
                 updateButterfly();
@@ -321,12 +324,16 @@ class Garden extends State {
     }
 
     void updateButterfly() {
+        if(butterflyCaptive){
+            butterflyAvatar.draw(screen, 202, 136);
+            return;
+        }
         butterflyMove--;
         if (butterflyMove < 0) {
             butterflyMove = 100;
-            if (butterfly.x > 200) {
+            if (butterfly.x > 180) {
                 butterfly.x -= 10;
-            } else if (butterfly.x < 10) {
+            } else if (butterfly.x < 20) {
                 butterfly.x += 10;
             } else {
                 butterfly.x += Math.random(-10, 11);
@@ -334,7 +341,7 @@ class Garden extends State {
 
             if (butterfly.y > 130) {
                 butterfly.y -= 10;
-            } else if (butterfly.y < 20) {
+            } else if (butterfly.y < 40) {
                 butterfly.y += 10;
             } else {
                 butterfly.y += Math.random(-8, 9);
@@ -478,70 +485,88 @@ class Garden extends State {
         }
 
         // handle movement
-        if (move) {
-            if (Button.A.justPressed()) {
-                // CheckButterfly
-                if (butterfly.x < player.x + player.w &&
-                    butterfly.x + butterfly.width() > player.x &&
-                    butterfly.y < player.y + player.h &&
-                    butterfly.y + butterfly.height() > player.y) {
-                    if (Math.random(0, 10) == 5) {
-                        butterflyLine = 5;
-                        gameState = 4;
-                        inventory.monies += 10;
-                        coin.play();
-                        return;
-                    } else {
-                        butterflyLine = Math.random(0, 5);
-                        gameState = 4;
-                        return;
-                    }
-                }
-
-                // CheckEndDay
-                if (player.x >= 150 && player.x < 150 + door.width() && player.y < 32) {
-                    confirm = true;
+        if (!move) return;
+        
+        if (Button.A.justPressed()) {
+            // CheckButterfly
+            if(butterflyCaptive){
+                butterflyCaptive = false;
+                butterfly.x = player.x;
+                butterfly.y = player.y;
+                return;
+            }
+            
+            if (butterfly.x < player.x + player.w &&
+                butterfly.x + butterfly.width() > player.x &&
+                butterfly.y < player.y + player.h &&
+                butterfly.y + butterfly.height() > player.y) {
+                if (Math.random(0, 10) == 5) {
+                    butterflyLine = 5;
+                    gameState = 4;
+                    inventory.monies += 10;
+                    coin.play();
+                    return;
+                } else {
+                    butterflyLine = Math.random(0, 5);
+                    gameState = 4;
                     return;
                 }
+            }
 
-                // CheckTree
-                if (player.x >= 180 && player.x <= 210 && player.y < 40) {
-                    gameState = 5;
-                    return;
-                }
+            // CheckEndDay
+            if (player.x >= 150 && player.x < 150 + door.width() && player.y < 32) {
+                confirm = true;
+                return;
+            }
 
-                // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
-                switch (inventory.equippedTool) {
-                    case 0:
-                        useFishingRod();
-                        break;
-                    case 1:
-                        useHoe();
-                        break;
-                    case 2:
-                        useWater();
-                        break;
-                    case 3:
-                        useBasket();
-                        break;
-                    case 4:
-                        usePlanter();
-                        break;
-                }
+            // CheckTree
+            if (player.x >= 180 && player.x <= 210 && player.y < 40) {
+                gameState = 5;
+                return;
             }
-            if (Button.Left.justPressed()) {
-                player.moveLeft();
-            }
-            if (Button.Right.justPressed()) {
-                player.moveRight();
-            }
-            if (Button.Up.justPressed()) {
-                player.moveUp();
-            }
-            if (Button.Down.justPressed()) {
-                player.moveDown();
+
+            // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
+            switch (inventory.equippedTool) {
+                case 0:
+                    useFishingRod();
+                    break;
+                case 1:
+                    useHoe();
+                    break;
+                case 2:
+                    useWater();
+                    break;
+                case 3:
+                    useBasket();
+                    break;
+                case 4:
+                    usePlanter();
+                    break;
             }
         }
+        
+        if(moveTime > 10)moveTime = 1;
+        if (Button.Left.isPressed()) {
+            if(moveTime == 0 || moveTime == 10)player.moveLeft();
+            moveTime++;
+            return;
+        }
+        if (Button.Right.isPressed()) {
+            if(moveTime == 0 || moveTime == 10)player.moveRight();
+            moveTime++;
+            return;
+        }
+        if (Button.Up.isPressed()) {
+            if(moveTime == 0 || moveTime == 10)player.moveUp();
+            moveTime++;
+            return;
+        }
+        if (Button.Down.isPressed()) {
+            if(moveTime == 0 || moveTime == 10)player.moveDown();
+            moveTime++;
+            return;
+        }
+        moveTime = 0;
     }
 
     byte getFoundItem() {
@@ -900,6 +925,11 @@ class Garden extends State {
                 tool = 2;
                 splash.play();
             }
+        }else{
+            // Play donk
+            move = false;
+            tool = 2;
+            swingWater = 10;
         }
     }
 
@@ -1016,10 +1046,16 @@ class Garden extends State {
                 break;
             case 2:
                 if (swingWater > 0) {
+                    if(inventory.fill!=0){
+                        water.swing();
+                        water.draw(screen, player.x, player.y);
+                    }else{
+                        actionIcon.draw(screen, 50,142);
+                    }
+                    
                     swingWater--;
-                    water.swing();
-                    water.draw(screen, player.x, player.y);
                     if (swingWater == 0) move = true;
+
                 }
                 break;
             case 3:
