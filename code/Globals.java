@@ -18,11 +18,15 @@ public class Globals {
         character = saveManager.character;
     }
     
+    /**
+     * Resets all save data to an initial state.
+     */
     static void reset(){
-        saveManager.character = 0;
+        saveManager.character = character;
         saveManager.monies = 0;
         saveManager.day = 0;
         saveManager.fishing = false;
+        saveManager.complete = false;
         
         byte[] field = new byte[120 * 2];
         for (int i = 0; i < (120 * 2); i++) {
@@ -31,8 +35,8 @@ public class Globals {
 
         // Begin with unlocked Turnip and 6 quanity
         byte[] items = new byte[16];
-        items[0] = 1;
-        items[1] = 6;
+        items[0] = (byte)1;
+        items[1] = (byte)6;
         for (int j = 2; j < 16; j ++) {
             items[j] = (byte)0;
         }

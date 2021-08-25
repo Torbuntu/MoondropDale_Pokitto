@@ -103,8 +103,9 @@ class Inventory {
      * Manages increase in Monies when a crop
      * is harvested.    
      * 
+     * If Magic Fruit, return true;
      */
-    void harvest(byte id) {
+    boolean harvest(byte id) {
         switch (id) {
             case 0:
                 break;
@@ -134,8 +135,10 @@ class Inventory {
                 break;
             case 9:
                 monies += 500;
+                return true;
                 break;
         }
+        return false;
     }
 
     public int getCost(byte id) {
@@ -174,23 +177,26 @@ class Inventory {
     // 0:fishing rod, 1:hoe, 2:water, 3:basket, 4:planter 
     void drawHud(HiRes16Color screen, boolean fish) {
         // UI box
-        screen.fillRect(0, 152, 220, 24, 1);
-        screen.drawRect(1, 153, 120, 22, 14);
+        screen.fillRect(0, 153, 220, 24, 1);
+        screen.drawHLine(0, 151, 220, 7);
+        screen.drawHLine(0, 152, 220, 8);
+        
         screen.setTextColor(2);
         screen.setTextPosition(124, 155);
         screen.print("$" + monies);
 
         // Unlock the fishing rod?
-        if (fish) fishingIcon.draw(screen, 4, 155);
+        if (fish) fishingIcon.draw(screen, 4, 156);
+        else screen.drawRect(4,156,19,15,5);
 
-        hoeIcon.draw(screen, 24, 155);
+        hoeIcon.draw(screen, 24, 156);
 
-        waterIcon.draw(screen, 44, 155);
-        screen.drawHLine(47, 173, (int)(fill * 14 / 8), 14);
+        waterIcon.draw(screen, 44, 156);
+        screen.drawHLine(47, 174, (int)(fill * 14 / 8), 14);
 
-        basketIcon.draw(screen, 64, 155);
+        basketIcon.draw(screen, 64, 156);
 
-        planterIcon.draw(screen, 84, 155);
+        planterIcon.draw(screen, 84, 156);
         switch (equippedSeed) {
             case 0:
                 seedIcons.turnip();
@@ -227,10 +233,11 @@ class Inventory {
         seedIcons.draw(screen, 108, 156);
         
         screen.setTextPosition(107, 167);
+        if(quantities[equippedSeed] < 10)screen.print("0");
         screen.print( (int) quantities[equippedSeed]);
 
         // Show selected
-        screen.drawRect(3 + equippedTool * 20, 154, 21, 17, 14);
+        screen.drawRect(3 + equippedTool * 20, 155, 21, 17, 14);
     }
 
     public void drawTool(HiRes16Color screen) {
