@@ -46,7 +46,7 @@ import images.MusicOn;
 import images.MusicOff;
 import images.ButtonC;
 import images.ShadowA;
-//import images.ShadowB;
+import images.ShadowB;
 import images.Rocks;
 
 import audio.Donk;
@@ -94,7 +94,7 @@ class Garden extends State {
     SmallTree smallTree;
     Roof roof;
     ShadowA shadowA;
-    //ShadowB shadowB;
+    ShadowB shadowB;
     Rocks rocks;
 
     Tilled tilled;
@@ -225,7 +225,7 @@ class Garden extends State {
         tree = new Tree();
         smallTree = new SmallTree();
         shadowA = new ShadowA();
-        //shadowB = new ShadowB();
+        shadowB = new ShadowB();
         roof = new Roof();
         musicOn = new MusicOn();
         musicOff = new MusicOff();
@@ -1162,14 +1162,12 @@ class Garden extends State {
         door.draw(screen, 150, 12);
 
         // Roof
+        shadowB.draw(screen, 119, 14);
         screen.drawVLine(119, 0, 15, 1);
         for (byte i = 0; i < 4; i++) {
             roof.draw(screen, 120 + i * 32, 0);
         }
-
-        // field zone
-        // TODO: replace this with untilled soil sprite
-        //screen.fillRect(50, 64, 120, 80, 3);
+        
 
         for (int i = 0; i < 12; i++) {
             grassH.draw(screen, 50 + i * 10, 60);

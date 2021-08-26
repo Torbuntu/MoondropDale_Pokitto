@@ -182,7 +182,7 @@ class Title extends State {
                     if (Button.Up.justPressed()) {
                         cursor = 0;
                     }
-                    screen.setTextPosition(30, 90);
+                    screen.setTextPosition(24, 90);
                     screen.println("Welcome Back to Moondrop Dale!");
 
                     screen.setTextPosition(34, 130);
