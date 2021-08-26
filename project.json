@@ -163,9 +163,9 @@
 	},
 	"meta": {
 		"GAMEPLAY.md": {},
+		"IconLarge.png": {},
 		"IconSmall.png": {},
 		"KrakenBanner.aseprite": {},
-		"IconLarge.png": {},
 		"KrakenBanner.png": {},
 		"MoonDropDale.pal": {},
 		"Moondrop Dale.bin": {},
@@ -232,8 +232,8 @@
 		"audio/Select.wav": {},
 		"audio/Splash.wav": {},
 		"code/Globals.java": {},
-		"code/entities": {},
 		"code/Main.java": {},
+		"code/entities": {},
 		"code/managers": {},
 		"code/stages": {},
 		"data/mddale": {
@@ -275,6 +275,7 @@
 		"images/Roof.png": {},
 		"images/Seeds.png": {},
 		"images/ShadowA.png": {},
+		"images/ShadowB.png": {},
 		"images/SmallTree.png": {},
 		"images/Sprouts.png": {},
 		"images/Stick.png": {},
@@ -319,8 +320,8 @@
 		"sprites/Hoe.png": {},
 		"sprites/Lol.json": {},
 		"sprites/Lol.png": {},
-		"sprites/MagicFruit.png": {},
 		"sprites/MagicFruit.json": {},
+		"sprites/MagicFruit.png": {},
 		"sprites/Planter.json": {},
 		"sprites/Planter.png": {},
 		"sprites/Pond.json": {},
@@ -365,8 +366,7 @@
 		"disk/music/mdgard.raw": {},
 		"disk/music/mdrain.raw": {},
 		"disk/data/mddale/field": {},
-		"disk/data/mddale/items": {},
-		"images/ShadowB.png": {}
+		"disk/data/mddale/items": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

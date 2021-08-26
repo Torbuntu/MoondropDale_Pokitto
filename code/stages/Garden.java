@@ -724,7 +724,7 @@ class Garden extends State {
             screen.setTextPosition(45, 100);
             if (cursor == 10) screen.print("> ");
             screen.print("Fishing Rod: ");
-            inventory.fishingIcon.draw(screen, 145, 100);
+            inventory.fishingIcon.draw(screen, 126, 100);
         } else {
             screen.setTextPosition(45, 100);
             if (cursor == 10) screen.print("> ");
