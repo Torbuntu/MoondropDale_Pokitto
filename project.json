@@ -165,10 +165,10 @@
 		"GAMEPLAY.md": {},
 		"IconLarge.png": {},
 		"IconSmall.png": {},
-		"KrakenBanner.aseprite": {},
-		"KrakenBanner.png": {},
 		"MoonDropDale.pal": {},
+		"KrakenBanner.aseprite": {},
 		"Moondrop Dale.bin": {},
+		"KrakenBanner.png": {},
 		"Moondrop Dale.eeprom": {},
 		"Moondrop Dale.elf": {},
 		"Moondrop_mockup2.png": {},
@@ -239,7 +239,7 @@
 		"data/mddale": {
 			"sdcard": true
 		},
-		"disk/Moondrop Dale - vJam.3.zip": {},
+		"disk/Moondrop Dale - vJam.5.zip": {},
 		"disk/Moondrop Dale.pop": {},
 		"disk/data": {},
 		"disk/music": {},
@@ -364,9 +364,11 @@
 		"disk/data/mddale": {},
 		"disk/music/mddal.raw": {},
 		"disk/music/mdgard.raw": {},
+		"disk/music/mdintro.raw": {},
 		"disk/music/mdrain.raw": {},
 		"disk/data/mddale/field": {},
-		"disk/data/mddale/items": {}
+		"disk/data/mddale/items": {},
+		"disk/Moondrop Dale - vJam.6.zip": {}
 	},
 	"ideVersion": 10000,
 	"BUILDFlags": {

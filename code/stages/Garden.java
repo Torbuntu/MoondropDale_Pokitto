@@ -752,7 +752,7 @@ class Garden extends State {
 
         if (Button.A.justPressed()) {
             if (cursor > 9) {
-                if (inventory.monies > 100) {
+                if (inventory.monies >= 100) {
                     fishingAvailable = true;
                     inventory.monies -= 100;
                     coin.play();
