@@ -6,7 +6,7 @@ This project is built using [FemtoIDE](https://github.com/felipemanga/femtoIDE) 
 #### Title music: 
 https://opengameart.org/content/a-new-town-rpg-theme
 
-#### Intor music:
+#### Intro music:
 https://opengameart.org/content/story-time
 
 #### Garden music:
@@ -26,33 +26,19 @@ T-2 : Seed is planted, any type
 T-3 : Sappling is growing 
 
 1-4_9 : turnip 
-2-4_9 : radish (harvestable starting at 7)
+2-4_9 : radish
 3-4_9 : daisy
 4-4_9 : Green bean
 5-4_9 : Coffee
 6-4_9 : Tea
 7-4_9 : Tomato
 8-4_9 : Blueberry
-9-4_9 : Magic Fruit (hehe)
-
-
-Rendering:
-
-3 soil types.
-Light soil - not tilled, 0-0, can't water nor plant.
-Medium soil - Tilled! 0-1, able to be watered and planted.
-Dark soil - Tilled or planted when watered.
-
-Any crop (T) that is growth < 4 && > 1 (2 and 3) will render 
-the same Seed then Sapling before specific crop sprites.
-
-
+9-4_9 : Magic Fruit
 
 ## TODO
 
 ? Change "real" crops for pretend ones.
 
-- Add donk sound for forbidden actions (empty water/seed, untillable land, not harvestable etc...)
 - Add a pling + few second timer after successful save before return to Title
 - Add atmosphere in Garden scene when music off
 
