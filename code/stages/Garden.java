@@ -744,7 +744,7 @@ class Garden extends State {
         }
 
         if (Button.Right.justPressed()) {
-            if (cursor < 8) cursor++;
+            if (cursor < 8 && inventory.unlocked[cursor]) cursor++;
         }
         if (Button.Left.justPressed()) {
             if (cursor > 0) cursor--;

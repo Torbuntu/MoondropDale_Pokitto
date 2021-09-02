@@ -5,6 +5,7 @@ import femto.mode.HiRes16Color;
 import images.Bush;
 
 import images.Seeds;
+import images.MagicSeed;
 import images.Sprouts;
 
 import images.Stick;
@@ -33,6 +34,9 @@ import images.CoffeeHarvest;
 import images.TeaYoung;
 import images.TeaHarvest;
 
+import images.MagicSprout;
+import images.MagicFruit;
+
 /**
  * CropManager is used for managing the Crop sprite lifecycles. 
  * 
@@ -56,6 +60,7 @@ public class CropManager {
     Bush bush;
     Seeds seeds;
     Sprouts sprouts;
+    MagicSeed magicSeed;
     Stick stick;
     
     // Turnip
@@ -83,13 +88,20 @@ public class CropManager {
     TeaYoung teaYoung;
     TeaHarvest teaHarvest;
     
+    MagicSprout magicSprout;
+    MagicFruit magicFruit;
+    
     /**
      * Initializes the images for drawing
      */ 
     public CropManager(){
         bush = new Bush();
         seeds = new Seeds();
+        magicSeed = new MagicSeed();
         sprouts = new Sprouts();
+        
+        magicSprout = new MagicSprout();
+        magicFruit = new MagicFruit();
         
         stick = new Stick();
         
@@ -275,13 +287,13 @@ public class CropManager {
      */
     private void drawMagicFruit(HiRes16Color screen, byte growth, short x, short y){
         switch(growth){
-            case 2: break;
-            case 3: break;
-            case 4: break;
-            case 5: break;
-            case 6: break;
-            case 7: break;
-            case 8: break;
+            case 2: 
+            case 3: 
+            case 4: magicSeed.draw(screen, x, y);break;
+            case 5: 
+            case 6: 
+            case 7: magicSprout.draw(screen, x, y);break;
+            case 8: magicFruit.draw(screen,x,y);break;
         }
     }
     
